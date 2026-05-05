@@ -1,0 +1,12 @@
+/home/nil/Documents/ktestify/ktestify-plugin-azureblob/src/main/java/io/github/ktestify/azureblob/AzureBlobPlugin.java
+/home/nil/Documents/ktestify/ktestify-plugin-azureblob/src/main/java/io/github/ktestify/azureblob/config/AzureBlobConfig.java
+/home/nil/Documents/ktestify/ktestify-plugin-azureblob/src/main/java/io/github/ktestify/azureblob/entities/KtestifyBlobContainer.java
+/home/nil/Documents/ktestify/ktestify-plugin-azureblob/src/main/java/io/github/ktestify/azureblob/io/AzureBlobConsumer.java
+/home/nil/Documents/ktestify/ktestify-plugin-azureblob/src/main/java/io/github/ktestify/azureblob/io/AzureBlobConsumerContext.java
+/home/nil/Documents/ktestify/ktestify-plugin-azureblob/src/main/java/io/github/ktestify/azureblob/io/AzureBlobRecordFetcher.java
+/home/nil/Documents/ktestify/ktestify-plugin-azureblob/src/main/java/io/github/ktestify/azureblob/services/AzureBlobUploadService.java
+/home/nil/Documents/ktestify/ktestify-plugin-azureblob/src/main/java/io/github/ktestify/azureblob/services/AzureBlobValidationService.java
+/home/nil/Documents/ktestify/ktestify-plugin-azureblob/src/main/java/io/github/ktestify/azureblob/steps/AzureBlobActionSteps.java
+/home/nil/Documents/ktestify/ktestify-plugin-azureblob/src/main/java/io/github/ktestify/azureblob/steps/AzureBlobBackgroundSteps.java
+/home/nil/Documents/ktestify/ktestify-plugin-azureblob/src/main/java/io/github/ktestify/azureblob/steps/AzureBlobValidationSteps.java
+/home/nil/Documents/ktestify/ktestify-plugin-azureblob/src/main/java/io/github/ktestify/azureblob/steps/SharedAzureBlobResources.java
