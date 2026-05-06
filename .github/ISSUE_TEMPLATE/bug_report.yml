@@ -1,0 +1,92 @@
+name: 🐛 Bug Report
+description: Report a reproducible bug in ktestify-plugin-azureblob
+title: "[Bug]: "
+labels: [ "bug", "triage" ]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill this in! 🙏
+        Please be as specific as possible — the more detail you provide,
+        the faster we can reproduce and fix the issue.
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Pre-flight checklist
+      options:
+        - label: I searched [existing issues](https://github.com/ktestify/ktestify-plugin-azureblob/issues) and this is not a duplicate.
+          required: true
+        - label: I read the [documentation](https://github.com/ktestify/ktestify-plugin-azureblob/blob/main/README.md).
+          required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+      placeholder: "When I call … with … I get … instead of …"
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Minimal, complete, reproducible example.
+      placeholder: |
+        1. Configure ktestify-plugin-azureblob with …
+        2. Upload a blob with …
+        3. Call AzureBlobClient …
+        4. Observe the exception …
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behaviour
+      description: What should have happened?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behaviour
+      description: What actually happened? Please include the **full stack trace** if applicable.
+      render: text
+    validations:
+      required: true
+  - type: input
+    id: plugin-version
+    attributes:
+      label: ktestify-plugin-azureblob Version
+      placeholder: "e.g. 1.0.0"
+    validations:
+      required: true
+  - type: input
+    id: ktestify-core-version
+    attributes:
+      label: ktestify-core Version
+      placeholder: "e.g. 0.3.0"
+    validations:
+      required: true
+  - type: input
+    id: java-version
+    attributes:
+      label: Java Version
+      placeholder: "e.g. Java 25.0.1 (Temurin)"
+    validations:
+      required: true
+  - type: input
+    id: azure-sdk-version
+    attributes:
+      label: Azure SDK Version
+      placeholder: "e.g. azure-storage-blob 12.x"
+  - type: textarea
+    id: config
+    attributes:
+      label: Configuration (sanitize sensitive data)
+      description: Relevant configuration snippet.
+      render: hocon
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: "Anything else: OS, Docker version, CI environment, Azurite version, …"

@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discussion / Q&A
+    url: https://github.com/ktestify/ktestify-plugin-azureblob/discussions
+    about: Ask questions, share ideas, or start a discussion.
+  - name: 📖 Documentation
+    url: https://github.com/ktestify/ktestify-plugin-azureblob/blob/main/README.md
+    about: Read the full ktestify-plugin-azureblob documentation.
+  - name: 🔒 Security Vulnerability
+    url: https://github.com/ktestify/ktestify-plugin-azureblob/security/advisories/new
+    about: Report a security vulnerability privately (do NOT open a public issue).

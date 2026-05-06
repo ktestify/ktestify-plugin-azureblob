@@ -1,0 +1,69 @@
+name: ✨ Feature Request
+description: Propose a new feature or improvement for ktestify-plugin-azureblob
+title: "[Feature]: "
+labels: [ "enhancement" ]
+body:
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Pre-flight checklist
+      options:
+        - label: I searched [existing issues](https://github.com/ktestify/ktestify-plugin-azureblob/issues) and this feature has not been requested yet.
+          required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: |
+        Is your feature request related to a problem?
+        Describe the situation you are trying to improve.
+      placeholder: "I'm always frustrated when I try to … because …"
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the feature you would like to see.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Have you tried workarounds or alternative approaches?
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected Component
+      multiple: true
+      options:
+        - Azure Blob Storage Client
+        - Blob Upload
+        - Blob Download
+        - Blob Delete
+        - Container Management
+        - SAS Token / Authentication
+        - Azurite (local emulator) support
+        - Record Matching / Assertions
+        - Dynamic Variables
+        - Configuration (HOCON)
+        - Cucumber / BDD Integration
+        - Documentation
+        - CI / Build
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Example Usage / API Sketch
+      description: |
+        If you have an idea of what the API should look like,
+        show it here (pseudo-code is fine).
+      render: java
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: "Links, mockups, related PRs / issues, …"
