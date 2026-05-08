@@ -58,6 +58,7 @@
         <testcontainers.version>2.0.4</testcontainers.version>
 
         <!-- Maven Plugin Versions -->
+        <jacoco.plugin.version>0.8.14</jacoco.plugin.version>
         <maven.compiler.plugin.version>3.15.0</maven.compiler.plugin.version>
         <maven.jar.plugin.version>3.5.0</maven.jar.plugin.version>
         <maven.source.plugin.version>3.4.0</maven.source.plugin.version>
@@ -228,6 +229,37 @@
                 </configuration>
             </plugin>
 
+            <!-- JaCoCo -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>jacoco-initialize</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jacoco-report</id>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <phase>test</phase>
+                    </execution>
+                    <execution>
+                        <id>jacoco-check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>verify</phase>
+                        <configuration>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- Surefire — unit tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -236,11 +268,9 @@
                 <configuration>
                     <includes>
                         <include>**/*Test.java</include>
+                        <include>**/*Tests.java</include>
                     </includes>
-                    <excludes>
-                        <exclude>**/*IT.java</exclude>
-                    </excludes>
-                    <argLine>-Xmx512m -XX:+EnableDynamicAgentLoading</argLine>
+                    <argLine>@{argLine} -Xmx512m -XX:+EnableDynamicAgentLoading</argLine>
                 </configuration>
             </plugin>
 

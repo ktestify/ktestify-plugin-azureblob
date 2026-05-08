@@ -46,7 +46,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
  */
 @DisplayName("AzureBlobRecordFetcher — Integration Tests")
 @ExtendWith(AzuriteTestExtension.class)
-class AzureBlobRecordFetcherIT {
+class AzureBlobRecordFetcherITTests {
 
     private static final String CONTAINER = AzuriteTestExtension.TEST_CONTAINER;
 

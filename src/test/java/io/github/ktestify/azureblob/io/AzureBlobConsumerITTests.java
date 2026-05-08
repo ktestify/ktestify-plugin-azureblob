@@ -46,7 +46,7 @@ import org.junit.jupiter.api.io.TempDir;
  */
 @DisplayName("AzureBlobConsumer — Integration Tests")
 @ExtendWith(AzuriteTestExtension.class)
-class AzureBlobConsumerIT {
+class AzureBlobConsumerITTests {
 
     private static final String CONTAINER = AzuriteTestExtension.TEST_CONTAINER;
 
