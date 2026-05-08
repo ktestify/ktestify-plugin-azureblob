@@ -34,8 +34,6 @@ on:
     paths:
       - "src/**"
       - "pom.xml"
-      - "../ktestify-core/src/**"
-      - "../ktestify-core/pom.xml"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -73,15 +71,6 @@ jobs:
           distribution: temurin
           java-version: ${{ env.JAVA_VERSION }}
           cache: maven
-
-      # ── 3. Build ktestify-core (local Maven install) ─────────
-      - name: 🔨 Build & install ktestify-core
-        working-directory: ktestify-core
-        run: |
-          mvn install \
-            --no-transfer-progress \
-            -DskipTests \
-            -Dspotless.check.skip=true
 
       # ── 4. Run integration tests via Testcontainers ───────────
       #
