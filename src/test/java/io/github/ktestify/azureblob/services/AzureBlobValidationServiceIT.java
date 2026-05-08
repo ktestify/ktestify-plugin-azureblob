@@ -57,10 +57,10 @@ class AzureBlobValidationServiceIT {
 
     @BeforeEach
     void setUp() {
-        config = AzureBlobConfig.from(ConfigFactory.parseString(
-                "ktestify.plugins.azure-blob.connection-string = \"" + AzuriteTestExtension.getConnectionString() + "\"\n"
-                        + "ktestify.plugins.azure-blob.read-timeout = 5s\n"
-                        + "ktestify.plugins.azure-blob.poll-interval = 100ms"));
+        config = AzureBlobConfig.from(ConfigFactory.parseString("ktestify.plugins.azure-blob.connection-string = \""
+                + AzuriteTestExtension.getConnectionString() + "\"\n"
+                + "ktestify.plugins.azure-blob.read-timeout = 5s\n"
+                + "ktestify.plugins.azure-blob.poll-interval = 100ms"));
 
         service = new AzureBlobValidationService(config);
 
@@ -90,10 +90,7 @@ class AzureBlobValidationServiceIT {
             Path expectedFile = tempDir.resolve("expected.json");
             Files.writeString(expectedFile, content);
 
-            Map<String, String> row = Map.of(
-                    "blobName", blobName,
-                    "file", expectedFile.toString(),
-                    "readTimeout", "5");
+            Map<String, String> row = Map.of("blobName", blobName, "file", expectedFile.toString(), "readTimeout", "5");
 
             assertDoesNotThrow(() -> service.validateFromFile(row, container, null));
         }
@@ -130,10 +127,7 @@ class AzureBlobValidationServiceIT {
             Path expectedFile = tempDir.resolve("expected.json");
             Files.writeString(expectedFile, expectedContent);
 
-            Map<String, String> row = Map.of(
-                    "blobName", blobName,
-                    "file", expectedFile.toString(),
-                    "readTimeout", "5");
+            Map<String, String> row = Map.of("blobName", blobName, "file", expectedFile.toString(), "readTimeout", "5");
 
             assertThrows(AssertionError.class, () -> service.validateFromFile(row, container, null));
         }
@@ -145,16 +139,15 @@ class AzureBlobValidationServiceIT {
             Files.writeString(expectedFile, "{}");
 
             // Short timeout config
-            AzureBlobConfig fastConfig = AzureBlobConfig.from(ConfigFactory.parseString(
-                    "ktestify.plugins.azure-blob.connection-string = \"" + AzuriteTestExtension.getConnectionString() + "\"\n"
+            AzureBlobConfig fastConfig =
+                    AzureBlobConfig.from(ConfigFactory.parseString("ktestify.plugins.azure-blob.connection-string = \""
+                            + AzuriteTestExtension.getConnectionString() + "\"\n"
                             + "ktestify.plugins.azure-blob.read-timeout = 300ms\n"
                             + "ktestify.plugins.azure-blob.poll-interval = 100ms"));
 
             AzureBlobValidationService fastService = new AzureBlobValidationService(fastConfig);
 
-            Map<String, String> row = Map.of(
-                    "blobName", "nonexistent/missing.json",
-                    "file", expectedFile.toString());
+            Map<String, String> row = Map.of("blobName", "nonexistent/missing.json", "file", expectedFile.toString());
 
             assertThrows(
                     io.github.ktestify.exceptions.ConsumerException.class,
@@ -180,10 +173,7 @@ class AzureBlobValidationServiceIT {
             Path expectedFile = tempDir.resolve("expected.xml");
             Files.writeString(expectedFile, xml);
 
-            Map<String, String> row = Map.of(
-                    "blobName", blobName,
-                    "file", expectedFile.toString(),
-                    "readTimeout", "5");
+            Map<String, String> row = Map.of("blobName", blobName, "file", expectedFile.toString(), "readTimeout", "5");
 
             assertDoesNotThrow(() -> service.validateFromXmlFile(row, container, null));
         }
@@ -200,10 +190,14 @@ class AzureBlobValidationServiceIT {
             Files.writeString(expectedFile, expectedXml);
 
             Map<String, String> row = Map.of(
-                    "blobName", blobName,
-                    "file", expectedFile.toString(),
-                    "readTimeout", "5",
-                    "excludedElements", "timestamp"); // timestamp ignored
+                    "blobName",
+                    blobName,
+                    "file",
+                    expectedFile.toString(),
+                    "readTimeout",
+                    "5",
+                    "excludedElements",
+                    "timestamp"); // timestamp ignored
 
             assertDoesNotThrow(() -> service.validateFromXmlFile(row, container, null));
         }
@@ -220,8 +214,9 @@ class AzureBlobValidationServiceIT {
         @Test
         @DisplayName("passes when blob does not appear within the timeout (expected outcome)")
         void passesWhenBlobAbsent() {
-            AzureBlobConfig fastConfig = AzureBlobConfig.from(ConfigFactory.parseString(
-                    "ktestify.plugins.azure-blob.connection-string = \"" + AzuriteTestExtension.getConnectionString() + "\"\n"
+            AzureBlobConfig fastConfig =
+                    AzureBlobConfig.from(ConfigFactory.parseString("ktestify.plugins.azure-blob.connection-string = \""
+                            + AzuriteTestExtension.getConnectionString() + "\"\n"
                             + "ktestify.plugins.azure-blob.read-timeout = 400ms\n"
                             + "ktestify.plugins.azure-blob.poll-interval = 100ms"));
 
@@ -240,9 +235,7 @@ class AzureBlobValidationServiceIT {
             String blobName = "absent/surprise.json";
             uploadBlob(CONTAINER_NAME, blobName, "{\"surprise\": true}");
 
-            Map<String, String> row = Map.of(
-                    "blobName", blobName,
-                    "readTimeout", "5");
+            Map<String, String> row = Map.of("blobName", blobName, "readTimeout", "5");
 
             assertThrows(AssertionError.class, () -> service.validateBlobAbsent(row, container));
         }
@@ -320,4 +313,3 @@ class AzureBlobValidationServiceIT {
         }
     }
 }
-

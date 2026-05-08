@@ -21,9 +21,7 @@ import com.typesafe.config.ConfigFactory;
 import io.github.ktestify.config.KtestifyConfig;
 import org.junit.jupiter.api.*;
 
-/**
- * Unit tests for {@link AzureBlobConfig} — HOCON parsing, credential detection, and timeout defaults.
- */
+/** Unit tests for {@link AzureBlobConfig} — HOCON parsing, credential detection, and timeout defaults. */
 @DisplayName("AzureBlobConfig")
 class AzureBlobConfigTest {
 
@@ -99,8 +97,9 @@ class AzureBlobConfigTest {
         @Test
         @DisplayName("hasConnectionString() true when connection-string is set")
         void hasConnectionStringWhenSet() {
-            AzureBlobConfig cfg = AzureBlobConfig.from(ConfigFactory.parseString(
-                    "ktestify.plugins.azure-blob.connection-string = \"DefaultEndpointsProtocol=https;AccountName=x;AccountKey=dGVzdA==;EndpointSuffix=core.windows.net\""));
+            AzureBlobConfig cfg = AzureBlobConfig.from(
+                    ConfigFactory.parseString(
+                            "ktestify.plugins.azure-blob.connection-string = \"DefaultEndpointsProtocol=https;AccountName=x;AccountKey=dGVzdA==;EndpointSuffix=core.windows.net\""));
             assertTrue(cfg.hasConnectionString());
         }
 
@@ -147,20 +146,17 @@ class AzureBlobConfigTest {
         @Test
         @DisplayName("read-timeout can be overridden")
         void readTimeoutOverridable() {
-            AzureBlobConfig cfg = AzureBlobConfig.from(
-                    ConfigFactory.parseString("ktestify.plugins.azure-blob.read-timeout = 60s"));
+            AzureBlobConfig cfg =
+                    AzureBlobConfig.from(ConfigFactory.parseString("ktestify.plugins.azure-blob.read-timeout = 60s"));
             assertEquals(60_000L, cfg.getReadTimeoutMs());
         }
 
         @Test
         @DisplayName("poll-interval can be overridden")
         void pollIntervalOverridable() {
-            AzureBlobConfig cfg = AzureBlobConfig.from(
-                    ConfigFactory.parseString("ktestify.plugins.azure-blob.poll-interval = 1s"));
+            AzureBlobConfig cfg =
+                    AzureBlobConfig.from(ConfigFactory.parseString("ktestify.plugins.azure-blob.poll-interval = 1s"));
             assertEquals(1_000L, cfg.getPollIntervalMs());
         }
     }
 }
-
-
-

@@ -103,8 +103,9 @@ class AzureBlobPluginTest {
         @Test
         @DisplayName("initialize() succeeds when connection string is set")
         void initializeSucceedsWithConnectionString() {
-            KtestifyConfig cfg = KtestifyConfig.load(ConfigFactory.parseString(
-                    "ktestify.plugins.azure-blob.connection-string = \"DefaultEndpointsProtocol=https;AccountName=test;AccountKey=dGVzdA==;EndpointSuffix=core.windows.net\""));
+            KtestifyConfig cfg = KtestifyConfig.load(
+                    ConfigFactory.parseString(
+                            "ktestify.plugins.azure-blob.connection-string = \"DefaultEndpointsProtocol=https;AccountName=test;AccountKey=dGVzdA==;EndpointSuffix=core.windows.net\""));
 
             assertDoesNotThrow(() -> plugin.initialize(() -> cfg));
         }
@@ -141,6 +142,3 @@ class AzureBlobPluginTest {
         }
     }
 }
-
-
-
