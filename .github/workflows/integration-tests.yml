@@ -170,6 +170,7 @@ jobs:
         if: ${{ always() && github.event_name == 'pull_request' }}
         uses: actions/github-script@v9
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
             if (!fs.existsSync('/tmp/integration-report.md')) {
