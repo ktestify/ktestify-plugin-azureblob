@@ -46,7 +46,7 @@ import org.junit.jupiter.api.io.TempDir;
  */
 @DisplayName("AzureBlobConsumer — Integration Tests")
 @ExtendWith(AzuriteTestExtension.class)
-class AzureBlobConsumerIT {
+class AzureBlobConsumerITTests {
 
     private static final String CONTAINER = AzuriteTestExtension.TEST_CONTAINER;
 
@@ -54,10 +54,10 @@ class AzureBlobConsumerIT {
 
     @BeforeEach
     void setUp() {
-        config = AzureBlobConfig.from(ConfigFactory.parseString(
-                "ktestify.plugins.azure-blob.connection-string = \"" + AzuriteTestExtension.getConnectionString() + "\"\n"
-                        + "ktestify.plugins.azure-blob.read-timeout = 5s\n"
-                        + "ktestify.plugins.azure-blob.poll-interval = 100ms"));
+        config = AzureBlobConfig.from(ConfigFactory.parseString("ktestify.plugins.azure-blob.connection-string = \""
+                + AzuriteTestExtension.getConnectionString() + "\"\n"
+                + "ktestify.plugins.azure-blob.read-timeout = 5s\n"
+                + "ktestify.plugins.azure-blob.poll-interval = 100ms"));
 
         AzuriteTestExtension.clearContainer(CONTAINER);
     }
@@ -176,8 +176,9 @@ class AzureBlobConsumerIT {
         @Test
         @DisplayName("throws ConsumerException when blob times out")
         void throwsConsumerExceptionOnTimeout() {
-            AzureBlobConfig fastConfig = AzureBlobConfig.from(ConfigFactory.parseString(
-                    "ktestify.plugins.azure-blob.connection-string = \"" + AzuriteTestExtension.getConnectionString() + "\"\n"
+            AzureBlobConfig fastConfig =
+                    AzureBlobConfig.from(ConfigFactory.parseString("ktestify.plugins.azure-blob.connection-string = \""
+                            + AzuriteTestExtension.getConnectionString() + "\"\n"
                             + "ktestify.plugins.azure-blob.read-timeout = 400ms\n"
                             + "ktestify.plugins.azure-blob.poll-interval = 100ms"));
 
@@ -187,8 +188,8 @@ class AzureBlobConsumerIT {
                     .matchMethod(METHOD_MATCH_FILE)
                     .build();
 
-            ConsumerException ex = assertThrows(
-                    ConsumerException.class, () -> new AzureBlobConsumer(ctx, fastConfig).call());
+            ConsumerException ex =
+                    assertThrows(ConsumerException.class, () -> new AzureBlobConsumer(ctx, fastConfig).call());
             assertTrue(ex.getMessage().contains("nonexistent/blob.json"));
         }
     }
@@ -208,4 +209,3 @@ class AzureBlobConsumerIT {
         }
     }
 }
-

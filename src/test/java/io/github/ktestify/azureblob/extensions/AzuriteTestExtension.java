@@ -61,16 +61,10 @@ public class AzuriteTestExtension implements BeforeAllCallback, AfterAllCallback
     /** Blob service port inside the container. */
     private static final int BLOB_PORT = 10000;
 
-    /**
-     * Well-known Azurite development account name.
-     * Safe to commit — only valid against the local emulator.
-     */
+    /** Well-known Azurite development account name. Safe to commit — only valid against the local emulator. */
     public static final String DEV_ACCOUNT_NAME = "devstoreaccount1";
 
-    /**
-     * Well-known Azurite development account key.
-     * Safe to commit — only valid against the local emulator.
-     */
+    /** Well-known Azurite development account key. Safe to commit — only valid against the local emulator. */
     public static final String DEV_ACCOUNT_KEY =
             "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==";
 
@@ -92,9 +86,12 @@ public class AzuriteTestExtension implements BeforeAllCallback, AfterAllCallback
                     .withExposedPorts(BLOB_PORT, 10001, 10002)
                     .withCommand(
                             "azurite",
-                            "--blobHost", "0.0.0.0",
-                            "--queueHost", "0.0.0.0",
-                            "--tableHost", "0.0.0.0",
+                            "--blobHost",
+                            "0.0.0.0",
+                            "--queueHost",
+                            "0.0.0.0",
+                            "--tableHost",
+                            "0.0.0.0",
                             "--skipApiVersionCheck");
             azurite.start();
             LOG.info("Azurite started — blob endpoint: {}", getBlobEndpoint());
@@ -163,15 +160,16 @@ public class AzuriteTestExtension implements BeforeAllCallback, AfterAllCallback
     }
 
     /**
-     * Deletes all blobs inside the given container without removing the container itself.
-     * Useful for cleaning state between tests.
+     * Deletes all blobs inside the given container without removing the container itself. Useful for cleaning state
+     * between tests.
      *
      * @param containerName the container to wipe
      */
     public static void clearContainer(String containerName) {
         BlobContainerClient client = buildBlobServiceClient().getBlobContainerClient(containerName);
         if (Boolean.TRUE.equals(client.exists())) {
-            client.listBlobs().forEach(item -> client.getBlobClient(item.getName()).deleteIfExists());
+            client.listBlobs()
+                    .forEach(item -> client.getBlobClient(item.getName()).deleteIfExists());
         }
     }
 
@@ -181,9 +179,8 @@ public class AzuriteTestExtension implements BeforeAllCallback, AfterAllCallback
 
     private static void assertStarted() {
         if (azurite == null || !azurite.isRunning()) {
-            throw new IllegalStateException(
-                    "AzuriteTestExtension has not been started. "
-                            + "Annotate your test class with @ExtendWith(AzuriteTestExtension.class).");
+            throw new IllegalStateException("AzuriteTestExtension has not been started. "
+                    + "Annotate your test class with @ExtendWith(AzuriteTestExtension.class).");
         }
     }
 }

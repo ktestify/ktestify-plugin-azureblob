@@ -46,7 +46,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
  */
 @DisplayName("AzureBlobRecordFetcher — Integration Tests")
 @ExtendWith(AzuriteTestExtension.class)
-class AzureBlobRecordFetcherIT {
+class AzureBlobRecordFetcherITTests {
 
     private static final String CONTAINER = AzuriteTestExtension.TEST_CONTAINER;
 
@@ -55,10 +55,10 @@ class AzureBlobRecordFetcherIT {
     @BeforeEach
     void setUp() {
         // Load config pointing at the running Azurite instance
-        config = AzureBlobConfig.from(ConfigFactory.parseString(
-                "ktestify.plugins.azure-blob.connection-string = \"" + AzuriteTestExtension.getConnectionString() + "\"\n"
-                        + "ktestify.plugins.azure-blob.read-timeout = 5s\n"
-                        + "ktestify.plugins.azure-blob.poll-interval = 100ms"));
+        config = AzureBlobConfig.from(ConfigFactory.parseString("ktestify.plugins.azure-blob.connection-string = \""
+                + AzuriteTestExtension.getConnectionString() + "\"\n"
+                + "ktestify.plugins.azure-blob.read-timeout = 5s\n"
+                + "ktestify.plugins.azure-blob.poll-interval = 100ms"));
 
         // Wipe the container state between tests
         AzuriteTestExtension.clearContainer(CONTAINER);
@@ -125,11 +125,9 @@ class AzureBlobRecordFetcherIT {
             BlobContainerClient containerClient =
                     AzuriteTestExtension.buildBlobServiceClient().getBlobContainerClient(CONTAINER);
             byte[] bytes = content.getBytes(StandardCharsets.UTF_8);
-            containerClient.getBlobClient(blobName)
-                    .upload(new java.io.ByteArrayInputStream(bytes), bytes.length, true);
+            containerClient.getBlobClient(blobName).upload(new java.io.ByteArrayInputStream(bytes), bytes.length, true);
             // Set metadata after upload
-            containerClient.getBlobClient(blobName)
-                    .setMetadata(java.util.Map.of("env", "test", "version", "1"));
+            containerClient.getBlobClient(blobName).setMetadata(java.util.Map.of("env", "test", "version", "1"));
 
             AzureBlobConsumerContext ctx = contextFor(CONTAINER, blobName);
             AzureBlobRecordFetcher fetcher = new AzureBlobRecordFetcher(ctx, config);
@@ -170,8 +168,9 @@ class AzureBlobRecordFetcherIT {
         @DisplayName("throws FetchException when blob does not exist within the timeout")
         void throwsFetchExceptionOnTimeout() {
             // Very short timeout so the test stays fast
-            AzureBlobConfig fastConfig = AzureBlobConfig.from(ConfigFactory.parseString(
-                    "ktestify.plugins.azure-blob.connection-string = \"" + AzuriteTestExtension.getConnectionString() + "\"\n"
+            AzureBlobConfig fastConfig =
+                    AzureBlobConfig.from(ConfigFactory.parseString("ktestify.plugins.azure-blob.connection-string = \""
+                            + AzuriteTestExtension.getConnectionString() + "\"\n"
                             + "ktestify.plugins.azure-blob.read-timeout = 500ms\n"
                             + "ktestify.plugins.azure-blob.poll-interval = 100ms"));
 
@@ -186,8 +185,9 @@ class AzureBlobRecordFetcherIT {
         @Test
         @DisplayName("error message contains timeout duration")
         void errorMessageContainsTimeoutMs() {
-            AzureBlobConfig fastConfig = AzureBlobConfig.from(ConfigFactory.parseString(
-                    "ktestify.plugins.azure-blob.connection-string = \"" + AzuriteTestExtension.getConnectionString() + "\"\n"
+            AzureBlobConfig fastConfig =
+                    AzureBlobConfig.from(ConfigFactory.parseString("ktestify.plugins.azure-blob.connection-string = \""
+                            + AzuriteTestExtension.getConnectionString() + "\"\n"
                             + "ktestify.plugins.azure-blob.read-timeout = 300ms\n"
                             + "ktestify.plugins.azure-blob.poll-interval = 100ms"));
 
@@ -215,13 +215,11 @@ class AzureBlobRecordFetcherIT {
 
             // Schedule the upload 800ms after the fetcher starts
             ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-            scheduler.schedule(
-                    () -> uploadBlob(CONTAINER, blobName, content),
-                    800,
-                    TimeUnit.MILLISECONDS);
+            scheduler.schedule(() -> uploadBlob(CONTAINER, blobName, content), 800, TimeUnit.MILLISECONDS);
 
-            AzureBlobConfig waitingConfig = AzureBlobConfig.from(ConfigFactory.parseString(
-                    "ktestify.plugins.azure-blob.connection-string = \"" + AzuriteTestExtension.getConnectionString() + "\"\n"
+            AzureBlobConfig waitingConfig =
+                    AzureBlobConfig.from(ConfigFactory.parseString("ktestify.plugins.azure-blob.connection-string = \""
+                            + AzuriteTestExtension.getConnectionString() + "\"\n"
                             + "ktestify.plugins.azure-blob.read-timeout = 5s\n"
                             + "ktestify.plugins.azure-blob.poll-interval = 200ms"));
 
@@ -252,11 +250,9 @@ class AzureBlobRecordFetcherIT {
             BlobContainerClient client =
                     AzuriteTestExtension.buildBlobServiceClient().getBlobContainerClient(containerName);
             byte[] bytes = content.getBytes(StandardCharsets.UTF_8);
-            client.getBlobClient(blobName)
-                    .upload(new java.io.ByteArrayInputStream(bytes), bytes.length, true);
+            client.getBlobClient(blobName).upload(new java.io.ByteArrayInputStream(bytes), bytes.length, true);
         } catch (Exception e) {
             throw new RuntimeException("Failed to upload test blob '" + blobName + "': " + e.getMessage(), e);
         }
     }
 }
-
