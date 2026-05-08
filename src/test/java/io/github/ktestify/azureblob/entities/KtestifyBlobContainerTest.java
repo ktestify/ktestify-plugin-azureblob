@@ -19,9 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.*;
 
-/**
- * Unit tests for {@link KtestifyBlobContainer} — builder, immutability, and field accessors.
- */
+/** Unit tests for {@link KtestifyBlobContainer} — builder, immutability, and field accessors. */
 @DisplayName("KtestifyBlobContainer")
 class KtestifyBlobContainerTest {
 
@@ -107,4 +105,3 @@ class KtestifyBlobContainerTest {
         }
     }
 }
-

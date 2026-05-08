@@ -29,8 +29,8 @@ import org.junit.jupiter.api.*;
 /**
  * Unit tests for {@link AzureBlobValidationSteps}.
  *
- * <p>These tests cover parameter validation and container resolution without connecting to Azure.
- * End-to-end validation behaviour is covered in {@code AzureBlobValidationServiceIT}.
+ * <p>These tests cover parameter validation and container resolution without connecting to Azure. End-to-end validation
+ * behaviour is covered in {@code AzureBlobValidationServiceIT}.
  */
 @DisplayName("AzureBlobValidationSteps")
 class AzureBlobValidationStepsTest {
@@ -62,8 +62,7 @@ class AzureBlobValidationStepsTest {
         @DisplayName("throws IllegalArgumentException when containerAlias column is blank")
         void throwsWhenContainerAliasBlank() {
             DataTable dt = buildDataTable(
-                    List.of("containerAlias", "blobName", "file"),
-                    List.of("", "output.json", "expected.json"));
+                    List.of("containerAlias", "blobName", "file"), List.of("", "output.json", "expected.json"));
 
             assertThrows(IllegalArgumentException.class, () -> steps.thenExpectedBlobContentFromFile(dt));
         }
@@ -71,9 +70,7 @@ class AzureBlobValidationStepsTest {
         @Test
         @DisplayName("throws IllegalArgumentException when containerAlias column is absent")
         void throwsWhenContainerAliasAbsent() {
-            DataTable dt = buildDataTable(
-                    List.of("blobName", "file"),
-                    List.of("output.json", "expected.json"));
+            DataTable dt = buildDataTable(List.of("blobName", "file"), List.of("output.json", "expected.json"));
 
             assertThrows(IllegalArgumentException.class, () -> steps.thenExpectedBlobContentFromFile(dt));
         }
@@ -82,8 +79,7 @@ class AzureBlobValidationStepsTest {
         @DisplayName("throws IllegalStateException when container is not registered")
         void throwsWhenContainerNotRegistered() {
             DataTable dt = buildDataTable(
-                    List.of("containerAlias", "blobName", "file"),
-                    List.of("unknown", "output.json", "expected.json"));
+                    List.of("containerAlias", "blobName", "file"), List.of("unknown", "output.json", "expected.json"));
 
             assertThrows(IllegalStateException.class, () -> steps.thenExpectedBlobContentFromFile(dt));
         }
@@ -101,8 +97,7 @@ class AzureBlobValidationStepsTest {
         @DisplayName("throws IllegalArgumentException when containerAlias column is blank")
         void throwsWhenContainerAliasBlank() {
             DataTable dt = buildDataTable(
-                    List.of("containerAlias", "blobName", "file"),
-                    List.of("", "order.xml", "expected.xml"));
+                    List.of("containerAlias", "blobName", "file"), List.of("", "order.xml", "expected.xml"));
 
             assertThrows(IllegalArgumentException.class, () -> steps.thenExpectedBlobXmlContentFromFile(dt));
         }
@@ -129,9 +124,7 @@ class AzureBlobValidationStepsTest {
         @Test
         @DisplayName("throws IllegalArgumentException when containerAlias column is blank")
         void throwsWhenContainerAliasBlank() {
-            DataTable dt = buildDataTable(
-                    List.of("containerAlias", "blobName"),
-                    List.of("", "output.json"));
+            DataTable dt = buildDataTable(List.of("containerAlias", "blobName"), List.of("", "output.json"));
 
             assertThrows(IllegalArgumentException.class, () -> steps.andBlobShouldNotExist(dt));
         }
@@ -139,9 +132,8 @@ class AzureBlobValidationStepsTest {
         @Test
         @DisplayName("throws IllegalStateException when container is not registered")
         void throwsWhenContainerNotRegistered() {
-            DataTable dt = buildDataTable(
-                    List.of("containerAlias", "blobName"),
-                    List.of("ghost-container", "output.json"));
+            DataTable dt =
+                    buildDataTable(List.of("containerAlias", "blobName"), List.of("ghost-container", "output.json"));
 
             assertThrows(IllegalStateException.class, () -> steps.andBlobShouldNotExist(dt));
         }
@@ -158,9 +150,7 @@ class AzureBlobValidationStepsTest {
         @Test
         @DisplayName("throws IllegalArgumentException when containerAlias column is blank")
         void throwsWhenContainerAliasBlank() {
-            DataTable dt = buildDataTable(
-                    List.of("containerAlias", "blobName"),
-                    List.of("", "output.json"));
+            DataTable dt = buildDataTable(List.of("containerAlias", "blobName"), List.of("", "output.json"));
 
             assertThrows(IllegalArgumentException.class, () -> steps.andBlobShouldExist(dt));
         }
@@ -168,9 +158,8 @@ class AzureBlobValidationStepsTest {
         @Test
         @DisplayName("throws IllegalStateException when container is not registered")
         void throwsWhenContainerNotRegistered() {
-            DataTable dt = buildDataTable(
-                    List.of("containerAlias", "blobName"),
-                    List.of("no-container", "output.json"));
+            DataTable dt =
+                    buildDataTable(List.of("containerAlias", "blobName"), List.of("no-container", "output.json"));
 
             assertThrows(IllegalStateException.class, () -> steps.andBlobShouldExist(dt));
         }
@@ -202,8 +191,7 @@ class AzureBlobValidationStepsTest {
             shared.containers.register("real-container", "real-alias", container("real-container"));
 
             DataTable dt = buildDataTable(
-                    List.of("containerAlias", "blobName", "readTimeout"),
-                    List.of("real-alias", "output.json", "1"));
+                    List.of("containerAlias", "blobName", "readTimeout"), List.of("real-alias", "output.json", "1"));
 
             // validateBlobAbsent() catches ConsumerException (including no-credentials PluginException)
             // and treats it as "blob not found" = expected = no exception thrown.
@@ -216,8 +204,7 @@ class AzureBlobValidationStepsTest {
             shared.containers.register("real-container", "real-alias", container("real-container"));
 
             DataTable dt = buildDataTable(
-                    List.of("containerAlias", "blobName", "readTimeout"),
-                    List.of("real-alias", "output.json", "1"));
+                    List.of("containerAlias", "blobName", "readTimeout"), List.of("real-alias", "output.json", "1"));
 
             assertThrows(RuntimeException.class, () -> steps.andBlobShouldExist(dt));
         }
@@ -237,5 +224,3 @@ class AzureBlobValidationStepsTest {
         return DataTable.create(List.of(headers, values), converter);
     }
 }
-
-

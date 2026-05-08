@@ -320,8 +320,8 @@ class AzureBlobValidationServiceIT {
 // =============================================================================
 
 /**
- * Unit tests for {@link AzureBlobValidationService} — DataTable helpers, path resolution, and
- * required-column validation without a live Azure endpoint.
+ * Unit tests for {@link AzureBlobValidationService} — DataTable helpers, path resolution, and required-column
+ * validation without a live Azure endpoint.
  */
 @DisplayName("AzureBlobValidationService — unit")
 class AzureBlobValidationServiceTest {
@@ -344,7 +344,8 @@ class AzureBlobValidationServiceTest {
         @Test
         @DisplayName("throws IllegalArgumentException when 'blobName' column is absent")
         void throwsWhenBlobNameAbsent() {
-            assertThrows(IllegalArgumentException.class,
+            assertThrows(
+                    IllegalArgumentException.class,
                     () -> service.validateFromFile(Map.of("file", "/f.json"), container("c"), null));
         }
 
@@ -354,14 +355,14 @@ class AzureBlobValidationServiceTest {
             HashMap<String, String> row = new HashMap<>();
             row.put("blobName", "   ");
             row.put("file", "/f.json");
-            assertThrows(IllegalArgumentException.class,
-                    () -> service.validateFromFile(row, container("c"), null));
+            assertThrows(IllegalArgumentException.class, () -> service.validateFromFile(row, container("c"), null));
         }
 
         @Test
         @DisplayName("throws IllegalArgumentException when 'file' column is absent")
         void throwsWhenFileAbsent() {
-            assertThrows(IllegalArgumentException.class,
+            assertThrows(
+                    IllegalArgumentException.class,
                     () -> service.validateFromFile(Map.of("blobName", "b.json"), container("c"), null));
         }
 
@@ -371,8 +372,7 @@ class AzureBlobValidationServiceTest {
             HashMap<String, String> row = new HashMap<>();
             row.put("blobName", "b.json");
             row.put("file", "");
-            assertThrows(IllegalArgumentException.class,
-                    () -> service.validateFromFile(row, container("c"), null));
+            assertThrows(IllegalArgumentException.class, () -> service.validateFromFile(row, container("c"), null));
         }
     }
 
@@ -383,14 +383,16 @@ class AzureBlobValidationServiceTest {
         @Test
         @DisplayName("throws IllegalArgumentException when 'blobName' column is absent")
         void throwsWhenBlobNameAbsent() {
-            assertThrows(IllegalArgumentException.class,
+            assertThrows(
+                    IllegalArgumentException.class,
                     () -> service.validateFromXmlFile(Map.of("file", "/f.xml"), container("c"), null));
         }
 
         @Test
         @DisplayName("throws IllegalArgumentException when 'file' column is absent")
         void throwsWhenFileAbsent() {
-            assertThrows(IllegalArgumentException.class,
+            assertThrows(
+                    IllegalArgumentException.class,
                     () -> service.validateFromXmlFile(Map.of("blobName", "order.xml"), container("c"), null));
         }
     }
@@ -402,7 +404,8 @@ class AzureBlobValidationServiceTest {
         @Test
         @DisplayName("throws IllegalArgumentException when 'blobName' column is absent")
         void throwsWhenBlobNameAbsent() {
-            assertThrows(IllegalArgumentException.class,
+            assertThrows(
+                    IllegalArgumentException.class,
                     () -> service.validateBlobAbsent(Map.of("readTimeout", "5"), container("c")));
         }
     }
@@ -416,19 +419,19 @@ class AzureBlobValidationServiceTest {
         @Test
         @DisplayName("explicit readTimeout reaches connection level without NPE")
         void explicitReadTimeoutReachesConnectionLevel() {
-            assertThrows(RuntimeException.class, () ->
-                    service.validateFromFile(
-                            Map.of("blobName", "b.json", "file", "/f.json", "readTimeout", "1"),
-                            container("c"), null));
+            assertThrows(
+                    RuntimeException.class,
+                    () -> service.validateFromFile(
+                            Map.of("blobName", "b.json", "file", "/f.json", "readTimeout", "1"), container("c"), null));
         }
 
         @Test
         @DisplayName("absent readTimeout falls back to global config without NPE")
         void absentReadTimeoutUsesGlobalConfig() {
-            assertThrows(RuntimeException.class, () ->
-                    service.validateFromFile(
-                            Map.of("blobName", "b.json", "file", "/f.json"),
-                            container("c"), null));
+            assertThrows(
+                    RuntimeException.class,
+                    () -> service.validateFromFile(
+                            Map.of("blobName", "b.json", "file", "/f.json"), container("c"), null));
         }
     }
 
@@ -445,26 +448,29 @@ class AzureBlobValidationServiceTest {
             row.put("blobName", "b.json");
             row.put("file", "/f.json");
             row.put("excludedKeys", "");
-            assertThrows(RuntimeException.class,
-                    () -> service.validateFromFile(row, container("c"), null));
+            assertThrows(RuntimeException.class, () -> service.validateFromFile(row, container("c"), null));
         }
 
         @Test
         @DisplayName("comma-separated excludedKeys are parsed without error")
         void commaSeparatedExcludedKeys() {
-            assertThrows(RuntimeException.class, () ->
-                    service.validateFromFile(
+            assertThrows(
+                    RuntimeException.class,
+                    () -> service.validateFromFile(
                             Map.of("blobName", "b.json", "file", "/f.json", "excludedKeys", "ts, id, v"),
-                            container("c"), null));
+                            container("c"),
+                            null));
         }
 
         @Test
         @DisplayName("comma-separated excludedElements are parsed without error (XML)")
         void commaSeparatedExcludedElements() {
-            assertThrows(RuntimeException.class, () ->
-                    service.validateFromXmlFile(
+            assertThrows(
+                    RuntimeException.class,
+                    () -> service.validateFromXmlFile(
                             Map.of("blobName", "o.xml", "file", "/o.xml", "excludedElements", "A,B"),
-                            container("c"), null));
+                            container("c"),
+                            null));
         }
     }
 
@@ -477,37 +483,37 @@ class AzureBlobValidationServiceTest {
         @Test
         @DisplayName("absolute path is used unchanged even when assetsDir is set")
         void absolutePathIgnoresAssetsDir() {
-            assertThrows(RuntimeException.class, () ->
-                    service.validateFromFile(
-                            Map.of("blobName", "b.json", "file", "/abs/expected.json"),
-                            container("c"), "/some/dir"));
+            assertThrows(
+                    RuntimeException.class,
+                    () -> service.validateFromFile(
+                            Map.of("blobName", "b.json", "file", "/abs/expected.json"), container("c"), "/some/dir"));
         }
 
         @Test
         @DisplayName("relative path is joined with assetsDir")
         void relativePathJoinedWithAssetsDir() {
-            assertThrows(RuntimeException.class, () ->
-                    service.validateFromFile(
-                            Map.of("blobName", "b.json", "file", "rel/expected.json"),
-                            container("c"), "/assets"));
+            assertThrows(
+                    RuntimeException.class,
+                    () -> service.validateFromFile(
+                            Map.of("blobName", "b.json", "file", "rel/expected.json"), container("c"), "/assets"));
         }
 
         @Test
         @DisplayName("null assetsDir: relative path used as-is")
         void nullAssetsDirRelativePathAsIs() {
-            assertThrows(RuntimeException.class, () ->
-                    service.validateFromFile(
-                            Map.of("blobName", "b.json", "file", "rel/expected.json"),
-                            container("c"), null));
+            assertThrows(
+                    RuntimeException.class,
+                    () -> service.validateFromFile(
+                            Map.of("blobName", "b.json", "file", "rel/expected.json"), container("c"), null));
         }
 
         @Test
         @DisplayName("blank assetsDir: relative path used as-is")
         void blankAssetsDirRelativePathAsIs() {
-            assertThrows(RuntimeException.class, () ->
-                    service.validateFromFile(
-                            Map.of("blobName", "b.json", "file", "rel/expected.json"),
-                            container("c"), "  "));
+            assertThrows(
+                    RuntimeException.class,
+                    () -> service.validateFromFile(
+                            Map.of("blobName", "b.json", "file", "rel/expected.json"), container("c"), "  "));
         }
     }
 
@@ -523,9 +529,7 @@ class AzureBlobValidationServiceTest {
             // validateBlobAbsent() catches ConsumerException (which wraps the PluginException from
             // missing credentials) and treats it as "blob not found" = expected = no exception thrown.
             assertDoesNotThrow(() ->
-                    service.validateBlobAbsent(
-                            Map.of("blobName", "absent.json", "readTimeout", "1"),
-                            container("c")));
+                    service.validateBlobAbsent(Map.of("blobName", "absent.json", "readTimeout", "1"), container("c")));
         }
     }
 
@@ -535,4 +539,3 @@ class AzureBlobValidationServiceTest {
         return KtestifyBlobContainer.builder().containerName(name).build();
     }
 }
-

@@ -81,8 +81,7 @@ class AzureBlobBackgroundStepsTest {
         @DisplayName("registers container by name only when alias is blank")
         void registersContainerByNameOnlyWhenAliasBlank() {
             DataTable dt = buildDataTable(
-                    List.of("containerName", "containerAlias", "connectionString"),
-                    List.of("my-container", "", ""));
+                    List.of("containerName", "containerAlias", "connectionString"), List.of("my-container", "", ""));
 
             steps.givenAzureBlobContainer(dt);
 
@@ -94,8 +93,7 @@ class AzureBlobBackgroundStepsTest {
         @DisplayName("registers container without connection string (global config fallback)")
         void registersContainerWithoutConnectionString() {
             DataTable dt = buildDataTable(
-                    List.of("containerName", "containerAlias"),
-                    List.of("no-connstr-container", "alias"));
+                    List.of("containerName", "containerAlias"), List.of("no-connstr-container", "alias"));
 
             steps.givenAzureBlobContainer(dt);
 
@@ -107,9 +105,7 @@ class AzureBlobBackgroundStepsTest {
         @Test
         @DisplayName("throws IllegalArgumentException when containerName is blank")
         void throwsWhenContainerNameBlank() {
-            DataTable dt = buildDataTable(
-                    List.of("containerName", "containerAlias"),
-                    List.of("", "alias"));
+            DataTable dt = buildDataTable(List.of("containerName", "containerAlias"), List.of("", "alias"));
 
             IllegalArgumentException ex =
                     assertThrows(IllegalArgumentException.class, () -> steps.givenAzureBlobContainer(dt));
@@ -193,9 +189,7 @@ class AzureBlobBackgroundStepsTest {
         @DisplayName("registers containers without alias (alias column empty)")
         void registersContainersWithoutAlias() {
             DataTable dt = buildMultiRowDataTable(
-                    List.of("containerName", "containerAlias"),
-                    List.of("cont-x", ""),
-                    List.of("cont-y", ""));
+                    List.of("containerName", "containerAlias"), List.of("cont-x", ""), List.of("cont-y", ""));
 
             steps.givenAzureBlobContainers(dt);
 
@@ -215,8 +209,7 @@ class AzureBlobBackgroundStepsTest {
         @Test
         @DisplayName("sets shared.assetsDirectory to the provided path")
         void setsAssetsDirectory() {
-            DataTable dt =
-                    buildDataTable(List.of("absolutePath"), List.of("/home/user/test/resources/data"));
+            DataTable dt = buildDataTable(List.of("absolutePath"), List.of("/home/user/test/resources/data"));
 
             steps.givenAzureBlobAssetsDirectory(dt);
 
@@ -259,8 +252,8 @@ class AzureBlobBackgroundStepsTest {
     // =========================================================================
 
     /**
-     * Creates a single-row DataTable from header and value lists, with a proper TableConverter so
-     * that {@code dataTable.asMaps()} works outside a Cucumber runtime.
+     * Creates a single-row DataTable from header and value lists, with a proper TableConverter so that
+     * {@code dataTable.asMaps()} works outside a Cucumber runtime.
      */
     private static DataTable buildDataTable(List<String> headers, List<String> values) {
         DataTableTypeRegistry registry = new DataTableTypeRegistry(Locale.ENGLISH);
@@ -269,8 +262,8 @@ class AzureBlobBackgroundStepsTest {
     }
 
     /**
-     * Creates a multi-row DataTable (first list = headers, remaining = data rows) with a proper
-     * TableConverter so that {@code dataTable.asMaps()} works outside a Cucumber runtime.
+     * Creates a multi-row DataTable (first list = headers, remaining = data rows) with a proper TableConverter so that
+     * {@code dataTable.asMaps()} works outside a Cucumber runtime.
      */
     @SafeVarargs
     private static DataTable buildMultiRowDataTable(List<String> headers, List<String>... dataRows) {
@@ -282,6 +275,3 @@ class AzureBlobBackgroundStepsTest {
         return DataTable.create(all, converter);
     }
 }
-
-
-

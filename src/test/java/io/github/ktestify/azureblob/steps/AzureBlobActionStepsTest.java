@@ -29,9 +29,8 @@ import org.junit.jupiter.api.*;
 /**
  * Unit tests for {@link AzureBlobActionSteps}.
  *
- * <p>These tests verify parameter validation, container look-up, and path resolution logic without
- * connecting to Azure. The upload itself is covered by integration tests in {@code
- * AzureBlobValidationServiceIT}.
+ * <p>These tests verify parameter validation, container look-up, and path resolution logic without connecting to Azure.
+ * The upload itself is covered by integration tests in {@code AzureBlobValidationServiceIT}.
  */
 @DisplayName("AzureBlobActionSteps")
 class AzureBlobActionStepsTest {
@@ -63,8 +62,7 @@ class AzureBlobActionStepsTest {
         @DisplayName("throws IllegalArgumentException when containerAlias column is blank")
         void throwsWhenContainerAliasBlank() {
             DataTable dt = buildDataTable(
-                    List.of("containerAlias", "file", "blobName"),
-                    List.of("", "data.json", "output/data.json"));
+                    List.of("containerAlias", "file", "blobName"), List.of("", "data.json", "output/data.json"));
 
             assertThrows(IllegalArgumentException.class, () -> steps.whenBlobIsUploadedFromFile(dt));
         }
@@ -76,8 +74,7 @@ class AzureBlobActionStepsTest {
             shared.containers.register("my-container", "my-alias", container("my-container"));
 
             DataTable dt = buildDataTable(
-                    List.of("containerAlias", "file", "blobName"),
-                    List.of("my-alias", "", "output/data.json"));
+                    List.of("containerAlias", "file", "blobName"), List.of("my-alias", "", "output/data.json"));
 
             assertThrows(IllegalArgumentException.class, () -> steps.whenBlobIsUploadedFromFile(dt));
         }
@@ -87,9 +84,8 @@ class AzureBlobActionStepsTest {
         void throwsWhenBlobNameBlank() {
             shared.containers.register("my-container", "my-alias", container("my-container"));
 
-            DataTable dt = buildDataTable(
-                    List.of("containerAlias", "file", "blobName"),
-                    List.of("my-alias", "data.json", ""));
+            DataTable dt =
+                    buildDataTable(List.of("containerAlias", "file", "blobName"), List.of("my-alias", "data.json", ""));
 
             assertThrows(IllegalArgumentException.class, () -> steps.whenBlobIsUploadedFromFile(dt));
         }
@@ -156,8 +152,7 @@ class AzureBlobActionStepsTest {
             shared.containers.register("c", "alias", container("c"));
 
             DataTable dt = buildDataTable(
-                    List.of("containerAlias", "file", "blobName"),
-                    List.of("alias", "relative/file.json", "out.json"));
+                    List.of("containerAlias", "file", "blobName"), List.of("alias", "relative/file.json", "out.json"));
 
             RuntimeException ex = assertThrows(RuntimeException.class, () -> steps.whenBlobIsUploadedFromFile(dt));
             assertNotNull(ex);
@@ -170,8 +165,7 @@ class AzureBlobActionStepsTest {
             shared.containers.register("c", "alias", container("c"));
 
             DataTable dt = buildDataTable(
-                    List.of("containerAlias", "file", "blobName"),
-                    List.of("alias", "relative/file.json", "out.json"));
+                    List.of("containerAlias", "file", "blobName"), List.of("alias", "relative/file.json", "out.json"));
 
             assertThrows(RuntimeException.class, () -> steps.whenBlobIsUploadedFromFile(dt));
         }
@@ -191,4 +185,3 @@ class AzureBlobActionStepsTest {
         return DataTable.create(List.of(headers, values), converter);
     }
 }
-
