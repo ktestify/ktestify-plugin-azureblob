@@ -254,8 +254,6 @@
                             <goal>check</goal>
                         </goals>
                         <phase>verify</phase>
-                        <configuration>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
