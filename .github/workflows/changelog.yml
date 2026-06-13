@@ -27,6 +27,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
 
 # ──────────────────────────────────────────────────────────────
 jobs:
@@ -37,25 +38,24 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     permissions:
-      contents: write     # needed to commit CHANGELOG.md back to main
+      contents: read        # KTESTIFY_CHANGELOG_PAT handles the push to main
+      pull-requests: read   # fetch PR metadata for git-cliff
 
     steps:
       - name: Checkout (full history for cliff)
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.KTESTIFY_CHANGELOG_PAT }}
 
       - name: Generate CHANGELOG.md with git-cliff
         uses: orhun/git-cliff-action@v4
         with:
           config: cliff.toml
-          # Regenerate the full changelog from all tags
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         env:
           OUTPUT: CHANGELOG.md
           GITHUB_REPO: ${{ github.repository }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.KTESTIFY_CHANGELOG_PAT }}
 
       - name: Commit updated CHANGELOG.md
         run: |
@@ -122,7 +122,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs   = require('fs');
-            const marker  = '<!-- ktestify-azureblob-changelog-preview -->';
+            const marker  = '<!-- ktestify-changelog-preview -->';
             const runUrl  = `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`;
 
             let preview = '_No unreleased changes found since the last tag._';
@@ -169,5 +169,3 @@ jobs:
               });
               console.log('✅ Created changelog preview comment');
             }
-
-
