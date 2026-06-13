@@ -52,7 +52,7 @@
 
         <!-- Dependency Versions -->
         <ktestify.version>0.1.1</ktestify.version>
-        <azure.storage.blob.version>12.33.4</azure.storage.blob.version>
+        <azure.storage.blob.version>12.35.0</azure.storage.blob.version>
         <cucumber.version>7.34.3</cucumber.version>
         <junit.jupiter.version>6.1.0-M1</junit.jupiter.version>
         <lombok.version>1.18.44</lombok.version>
