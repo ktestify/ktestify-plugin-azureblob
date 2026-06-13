@@ -5,7 +5,7 @@
     <!-- Project Coordinates -->
     <groupId>io.github.ktestify</groupId>
     <artifactId>ktestify-plugin-azureblob</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <!-- Project Information -->
@@ -26,7 +26,7 @@
     <!-- Developers -->
     <developers>
         <developer>
-            <id>lead-developer</id>
+            <id>nil-malh</id>
             <name>Nil MALHOMME</name>
             <email>malhomme.nil+oss@icloud.com</email>
         </developer>
@@ -45,10 +45,13 @@
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.finalName>ktestify-plugin-azureblob</project.build.finalName>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- Dependency Versions -->
+        <ktestify.version>0.1.1</ktestify.version>
         <azure.storage.blob.version>12.33.0</azure.storage.blob.version>
         <cucumber.version>7.34.3</cucumber.version>
         <junit.jupiter.version>6.1.0-M1</junit.jupiter.version>
@@ -78,7 +81,7 @@
         <dependency>
             <groupId>io.github.ktestify</groupId>
             <artifactId>ktestify-core</artifactId>
-            <version>0.1.0-rc1</version>
+            <version>${ktestify.version}</version>
         </dependency>
 
         <!-- ===================================== -->
@@ -187,6 +190,7 @@
     </dependencies>
 
     <build>
+        <finalName>${project.build.finalName}</finalName>
         <plugins>
             <!-- Compiler -->
             <plugin>
@@ -231,6 +235,14 @@
                     <doclint>none</doclint>
                     <quiet>true</quiet>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- JaCoCo -->
@@ -315,7 +327,26 @@
                             <file>.spotless/HEADER.txt</file>
                         </licenseHeader>
                     </java>
+                    <pom>
+                        <includes>
+                            <include>pom.xml</include>
+                        </includes>
+                        <sortPom>
+                            <encoding>UTF-8</encoding>
+                            <keepBlankLines>true</keepBlankLines>
+                            <nrOfIndentSpace>4</nrOfIndentSpace>
+                            <expandEmptyElements>false</expandEmptyElements>
+                        </sortPom>
+                    </pom>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>package</phase>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -342,10 +373,6 @@
                                 </goals>
                                 <phase>verify</phase>
                                 <configuration>
-                                    <!-- --batch suppresses any TTY prompt (required in headless CI) -->
-                                    <!-- --pinentry-mode loopback lets the passphrase come from     -->
-                                    <!-- the MAVEN_GPG_PASSPHRASE env var via the plugin's          -->
-                                    <!-- passphrase-fd mechanism — no /dev/tty needed.              -->
                                     <gpgArguments>
                                         <arg>--pinentry-mode</arg>
                                         <arg>loopback</arg>
@@ -364,7 +391,7 @@
                         <configuration>
                             <publishingServerId>central</publishingServerId>
                             <autoPublish>true</autoPublish>
-
+                            <deploymentName>${project.artifactId}-${project.version}</deploymentName>
                             <waitUntil>published</waitUntil>
                         </configuration>
                     </plugin>
@@ -382,7 +409,6 @@
             </build>
         </profile>
     </profiles>
-
 </project>
 
 

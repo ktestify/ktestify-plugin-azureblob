@@ -27,6 +27,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
 
 # ──────────────────────────────────────────────────────────────
 jobs:
@@ -121,7 +122,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs   = require('fs');
-            const marker  = '<!-- ktestify-azureblob-changelog-preview -->';
+            const marker  = '<!-- ktestify-changelog-preview -->';
             const runUrl  = `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`;
 
             let preview = '_No unreleased changes found since the last tag._';
@@ -168,5 +169,3 @@ jobs:
               });
               console.log('✅ Created changelog preview comment');
             }
-
-

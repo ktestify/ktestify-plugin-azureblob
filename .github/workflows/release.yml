@@ -61,7 +61,6 @@ jobs:
 
     steps:
       # ── Input validation ──────────────────────────────────
-      # Catch malformed versions before they touch git or pom.xml.
       - name: Validate version inputs
         run: |
           if [[ ! "${{ inputs.release-version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
@@ -103,14 +102,8 @@ jobs:
                    | awk -F: '/^fpr/{print $10; exit}')
           echo "${KEY_FPR}:6:" | gpg --import-ownertrust --batch --no-tty
           echo "Imported key fingerprint: ${KEY_FPR}"
-          # Allow the GPG agent to use loopback pinentry so that
-          # maven-gpg-plugin can pipe the passphrase via --passphrase-fd
-          # without needing /dev/tty.
-          mkdir -p ~/.gnupg
-          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
-          gpgconf --kill gpg-agent
 
-      # ── Set release version ───────────────────────────────
+      # ── Set release version ───────────────────────────────────
       - name: Set pom.xml to release version ${{ inputs.release-version }}
         run: |
           mvn versions:set \
@@ -136,9 +129,7 @@ jobs:
           echo "README.md updated → ${RELEASE_VERSION}"
           grep -E "badge/version|<version>" README.md | head -5
 
-      # ── Build, test & sign ────────────────────────────────
-      # GPG passphrase passed as step-level env var (not CLI arg) to avoid
-      # exposing it in `ps` output and runner debug logs.
+      # ── Build, test & sign ────────────────────────────────────
       - name: Build with release profile (compile + test + GPG sign)
         run: |
           mvn verify -P release \
@@ -162,22 +153,18 @@ jobs:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
       # ── Commit, tag & push ────────────────────────────────
-      # Push IMMEDIATELY after tagging so the new commit SHA exists on GitHub
-      # before git-cliff calls the GitHub API in the next step.
       - name: Commit release version, tag & push
         if: inputs.dry-run == 'false'
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add pom.xml
-          git add README.md
+          git add pom.xml README.md
           git commit -m "chore(release): prepare release ${{ inputs.release-version }} [skip ci]"
           git tag -a "v${{ inputs.release-version }}" \
             -m "Release ${{ inputs.release-version }}"
           git push origin main --follow-tags
 
       # ── Generate release notes with git-cliff ─────────────
-      # Runs after push so the tagged commit SHA is on GitHub and the API call succeeds.
       - name: Generate release notes (git-cliff)
         if: inputs.dry-run == 'false'
         uses: orhun/git-cliff-action@v4
@@ -233,16 +220,16 @@ jobs:
         with:
           token: ${{ secrets.KTESTIFY_CHANGELOG_PAT }}
           tag_name: v${{ inputs.release-version }}
-          name: "ktestify-plugin-azureblob ${{ inputs.release-version }}"
+          name: "ktestify-plugin-notifications ${{ inputs.release-version }}"
           body_path: RELEASE_NOTES.md
           draft: false
           prerelease: false
           files: |
-            target/ktestify-plugin-azureblob-${{ inputs.release-version }}.jar
-            target/ktestify-plugin-azureblob-${{ inputs.release-version }}-sources.jar
-            target/ktestify-plugin-azureblob-${{ inputs.release-version }}-javadoc.jar
+            target/ktestify-plugin-azureblob.jar
+            target/ktestify-plugin-azureblob-sources.jar
+            target/ktestify-plugin-azureblob-javadoc.jar
 
-      # ── Rollback on failure ────────────────────────────────
+      # ── FIX 3: Rollback on failure ────────────────────────
       # Runs only when a previous step has failed AND this is not a dry-run.
       # At this point the tag may or may not have been pushed depending on
       # which step failed. Both cases are handled safely.
@@ -291,7 +278,3 @@ jobs:
           echo ""
           echo "📋 Release notes preview:"
           cat RELEASE_NOTES_DRYRUN.md
-
-
-
-
