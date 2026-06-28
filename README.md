@@ -6,7 +6,7 @@
   <img src="https://img.shields.io/badge/build-passing-6EE7B7?style=flat-square&labelColor=0C1018&color=6EE7B7" alt="build passing"/>
   <img src="https://img.shields.io/badge/license-Apache%202.0-6EE7B7?style=flat-square&labelColor=0C1018&color=6EE7B7" alt="license"/>
   <img src="https://img.shields.io/badge/java-25-2DD4BF?style=flat-square&labelColor=0C1018&color=2DD4BF" alt="java 25"/>
-  <img src="https://img.shields.io/badge/version-0.1.0-6EE7B7?style=flat-square&labelColor=0C1018&color=6EE7B7" alt="version"/>
+  <img src="https://img.shields.io/badge/version-0.1.1--SNAPSHOT-6EE7B7?style=flat-square&labelColor=0C1018&color=6EE7B7" alt="version"/>
 </p>
 
 <br/>
@@ -23,7 +23,7 @@ Drop the JAR into your `ktestify-cucumber` setup and the steps are automatically
 <dependency>
   <groupId>io.github.ktestify</groupId>
   <artifactId>ktestify-plugin-azureblob</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.1-SNAPSHOT</version>
   <scope>test</scope>
 </dependency>
 ```
