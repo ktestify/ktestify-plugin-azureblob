@@ -7,6 +7,8 @@ All notable changes to this project will be documented in this file.
 
 - Bump cucumber.version from 7.34.3 to 7.34.4 *(deps)* — [@dependabot[bot]](https://github.com/dependabot[bot])
 
+- Bump the junit5 group across 1 directory with 2 updates *(deps-dev)* — [@dependabot[bot]](https://github.com/dependabot[bot])
+
 
 ## [0.1.0] — 2026-06-28
 
