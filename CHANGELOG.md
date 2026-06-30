@@ -9,6 +9,8 @@ All notable changes to this project will be documented in this file.
 
 - Bump the junit5 group across 1 directory with 2 updates *(deps-dev)* — [@dependabot[bot]](https://github.com/dependabot[bot])
 
+- Bump com.diffplug.spotless:spotless-maven-plugin *(deps-dev)* — [@dependabot[bot]](https://github.com/dependabot[bot])
+
 
 ## [0.1.0] — 2026-06-28
 
@@ -58,7 +60,6 @@ All notable changes to this project will be documented in this file.
 
 
 - @nil-malh made their first contribution in [#14](https://github.com/ktestify/ktestify-plugin-azureblob/pull/14)
-
 
 
 ---
