@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+### ⬆️ Dependency Updates
+
+- Bump cucumber.version from 7.34.3 to 7.34.4 *(deps)* — [@dependabot[bot]](https://github.com/dependabot[bot])
+
+
 ## [0.1.0] — 2026-06-28
 
 ###  Bug Fixes
