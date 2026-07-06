@@ -51,9 +51,10 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- Dependency Versions -->
-        <ktestify.version>0.1.1</ktestify.version>
+        <ktestify.version>0.1.2</ktestify.version>
         <azure.storage.blob.version>12.35.0</azure.storage.blob.version>
         <cucumber.version>7.34.4</cucumber.version>
+        <jackson.version>2.21.2</jackson.version>
         <junit.jupiter.version>6.1.1</junit.jupiter.version>
         <lombok.version>1.18.44</lombok.version>
         <mockito.version>5.23.0</mockito.version>
@@ -73,6 +74,25 @@
         <versions.plugin.version>2.21.0</versions.plugin.version>
         <central.publishing.plugin.version>0.11.0</central.publishing.plugin.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!--
+                Pin ALL com.fasterxml.jackson.* modules to the same version.
+                Without this, transitive deps (e.g. azure-core's jackson-databind,
+                cucumber's jackson-annotations, etc.) pull in mixed patch versions
+                which causes ObjectMapper's static initializer to throw
+                NoClassDefFoundError / LinkageError at runtime.
+            -->
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <!-- ===================================== -->
