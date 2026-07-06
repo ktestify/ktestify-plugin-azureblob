@@ -22,6 +22,8 @@ All notable changes to this project will be documented in this file.
 
 - Bump io.github.ktestify:ktestify-core from 0.1.1 to 0.1.2 *(deps)* — [@dependabot[bot]](https://github.com/dependabot[bot])
 
+- Bump the logging group with 2 updates *(deps-dev)* — [@dependabot[bot]](https://github.com/dependabot[bot])
+
 
 ## [0.1.0] — 2026-06-28
 
