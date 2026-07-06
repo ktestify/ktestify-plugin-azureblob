@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+###  Miscellaneous
+
+- Removed DOCUMENTATION.md — [@nil-malh](https://github.com/nil-malh)
+
+- Add jackson dependency management — [@nil-malh](https://github.com/nil-malh)
+
+
 ### ⬆️ Dependency Updates
 
 - Bump cucumber.version from 7.34.3 to 7.34.4 *(deps)* — [@dependabot[bot]](https://github.com/dependabot[bot])
@@ -12,6 +19,8 @@ All notable changes to this project will be documented in this file.
 - Bump com.diffplug.spotless:spotless-maven-plugin *(deps-dev)* — [@dependabot[bot]](https://github.com/dependabot[bot])
 
 - Bump org.sonatype.central:central-publishing-maven-plugin *(deps-dev)* — [@dependabot[bot]](https://github.com/dependabot[bot])
+
+- Bump io.github.ktestify:ktestify-core from 0.1.1 to 0.1.2 *(deps)* — [@dependabot[bot]](https://github.com/dependabot[bot])
 
 
 ## [0.1.0] — 2026-06-28
