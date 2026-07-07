@@ -2,7 +2,8 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [0.1.1] — 2026-07-07
+
 ###  Miscellaneous
 
 - Removed DOCUMENTATION.md — [@nil-malh](https://github.com/nil-malh)
