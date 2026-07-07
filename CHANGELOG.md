@@ -10,6 +10,11 @@ All notable changes to this project will be documented in this file.
 - Add jackson dependency management — [@nil-malh](https://github.com/nil-malh)
 
 
+### ✨ Features
+
+- Switched to a parent pom for dependencies management — [@nil-malh](https://github.com/nil-malh)
+
+
 ### ⬆️ Dependency Updates
 
 - Bump cucumber.version from 7.34.3 to 7.34.4 *(deps)* — [@dependabot[bot]](https://github.com/dependabot[bot])
