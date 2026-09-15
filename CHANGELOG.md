@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+### ⬆️ Dependency Updates
+
+- Bump com.azure:azure-storage-blob in the azure group *(deps)* — [@dependabot[bot]](https://github.com/dependabot[bot])
+
+
 ## [0.1.1] — 2026-07-07
 
 ###  Miscellaneous
