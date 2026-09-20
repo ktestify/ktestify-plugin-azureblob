@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+### ✨ Features
+
+- Update plugin version handling and improve logging — [@nil-malh](https://github.com/nil-malh)
+
+
 ### ⬆️ Dependency Updates
 
 - Bump com.azure:azure-storage-blob in the azure group *(deps)* — [@dependabot[bot]](https://github.com/dependabot[bot])
