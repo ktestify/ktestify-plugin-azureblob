@@ -2,7 +2,8 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [0.1.2] — 2026-09-20
+
 ### ✨ Features
 
 - Update plugin version handling and improve logging — [@nil-malh](https://github.com/nil-malh)
