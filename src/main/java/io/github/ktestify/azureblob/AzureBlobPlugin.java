@@ -20,6 +20,7 @@ import io.github.ktestify.azureblob.config.AzureBlobConfig;
 import io.github.ktestify.exceptions.PluginException;
 import io.github.ktestify.plugin.KtestifyPlugin;
 import io.github.ktestify.plugin.PluginContext;
+import io.github.ktestify.plugin.PluginVersionResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,7 +67,7 @@ public final class AzureBlobPlugin implements KtestifyPlugin {
     private static final Logger LOG = LoggerFactory.getLogger(AzureBlobPlugin.class);
 
     private static final String PLUGIN_ID = "azure-blob";
-    private static final String PLUGIN_VERSION = "1.0-SNAPSHOT";
+    private static final String PLUGIN_VERSION = PluginVersionResolver.resolve(AzureBlobPlugin.class, "dev");
     private static final String PLUGIN_AUTHOR_NAME = "Nil MALHOMME";
     private static final String PLUGIN_AUTHOR_EMAIL = "malhomme.nil+oss@icloud.com";
     private static final String GLUE_PACKAGE = "io.github.ktestify.azureblob.steps";
@@ -132,11 +133,11 @@ public final class AzureBlobPlugin implements KtestifyPlugin {
      */
     @Override
     public void initialize(PluginContext context) {
-        LOG.info("Initializing ktestify Azure Blob Storage plugin v{}…", PLUGIN_VERSION);
+        LOG.info("Initializing plugin v{}…", PLUGIN_VERSION);
 
         Config raw = context.getConfig().getRaw();
         if (!raw.hasPath("ktestify.plugins.azure-blob")) {
-            throw new PluginException("Azure Blob plugin: missing HOCON section 'ktestify.plugins.azure-blob'. "
+            throw new PluginException("Missing HOCON section 'ktestify.plugins.azure-blob'. "
                     + "Ensure the plugin JAR (with its reference.conf) is on the classpath.");
         }
 
@@ -145,19 +146,19 @@ public final class AzureBlobPlugin implements KtestifyPlugin {
         // Warn (not fail) if no credentials are configured — a connection string may be
         // provided per-scenario in the DataTable.
         if (!config.hasConnectionString() && !config.hasAccountKeyAuth() && !config.hasSasToken()) {
-            LOG.warn("Azure Blob plugin: no global credentials configured. "
+            LOG.warn("No global credentials configured. "
                     + "Set KTESTIFY_AZURE_BLOB_CONNECTION_STRING or provide credentials per-scenario in the "
                     + "Given Azure Blob Storage container DataTable.");
         } else {
             LOG.info(
-                    "Azure Blob plugin: credentials configured (connection-string={}, account-key={}, sas-token={}).",
+                    "Found credentials (connection-string={}, account-key={}, sas-token={}).",
                     config.hasConnectionString(),
                     config.hasAccountKeyAuth(),
                     config.hasSasToken());
         }
 
         LOG.info(
-                "Azure Blob plugin initialized — read-timeout={}ms, poll-interval={}ms.",
+                "Plugin initialized (config: read-timeout={}ms, poll-interval={}ms).",
                 config.getReadTimeoutMs(),
                 config.getPollIntervalMs());
     }

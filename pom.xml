@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.github.ktestify</groupId>
         <artifactId>ktestify-parent</artifactId>
-        <version>1.0.2</version>
+        <version>1.0.3</version>
     </parent>
 
     <!-- Project Coordinates -->
@@ -56,7 +56,7 @@
         <dependency>
             <groupId>io.github.ktestify</groupId>
             <artifactId>ktestify-core</artifactId>
-            <version>1.0.3</version>
+            <version>1.1.2</version>
         </dependency>
 
         <!-- ===================================== -->
@@ -149,6 +149,32 @@
         <finalName>${project.build.finalName}</finalName>
 
         <plugins>
+            <!-- Filter plugin-version.properties so ${project.version} is substituted at build time -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>filter-plugin-version</id>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <phase>process-resources</phase>
+                        <configuration>
+                            <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <filtering>true</filtering>
+                                    <includes>
+                                        <include>**/plugin-version.properties</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- Surefire — unit tests (smaller heap than parent default) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
