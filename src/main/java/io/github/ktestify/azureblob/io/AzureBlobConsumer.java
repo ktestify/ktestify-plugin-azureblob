@@ -24,9 +24,10 @@ import io.github.ktestify.match.MatchResult;
 import io.github.ktestify.match.RecordMatcher;
 import io.github.ktestify.match.RecordMatcherFactory;
 import io.github.ktestify.models.ConsumedRecord;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Collections;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Orchestration-layer consumer for Azure Blob Storage.
@@ -76,8 +77,7 @@ public class AzureBlobConsumer extends AbstractConsumer {
      */
     @Override
     public Boolean call() {
-        AzureBlobRecordFetcher fetcher = new AzureBlobRecordFetcher(context, globalConfig);
-        try {
+        try (AzureBlobRecordFetcher fetcher = new AzureBlobRecordFetcher(context, globalConfig)) {
             List<ConsumedRecord<String>> records = fetcher.fetch();
             MatchContext matchCtx = buildMatchContext();
             MatchResult result = matcher.match(records, matchCtx);
@@ -93,9 +93,7 @@ public class AzureBlobConsumer extends AbstractConsumer {
 
         } catch (FetchException e) {
             throw new ConsumerException("Azure Blob fetch failed for '" + context.getBlobName() + "' in container '"
-                    + context.getContainerName() + "': " + e.getMessage());
-        } finally {
-            fetcher.close();
+                    + context.getContainerName() + "': " + e.getMessage(), e);
         }
     }
 

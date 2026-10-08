@@ -15,24 +15,21 @@
  */
 package io.github.ktestify.azureblob.services;
 
-import static io.github.ktestify.match.RecordMatcherFactory.METHOD_MATCH_FILE;
-
 import io.github.ktestify.azureblob.config.AzureBlobConfig;
 import io.github.ktestify.azureblob.entities.KtestifyBlobContainer;
 import io.github.ktestify.azureblob.io.AzureBlobConsumer;
 import io.github.ktestify.azureblob.io.AzureBlobConsumerContext;
 import io.github.ktestify.exceptions.ConsumerException;
+import io.github.ktestify.exceptions.FetchTimeoutException;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import lombok.extern.slf4j.Slf4j;
+import java.util.concurrent.*;
+
+import static io.github.ktestify.match.RecordMatcherFactory.METHOD_MATCH_FILE;
 
 /**
  * Orchestrates Azure Blob Storage validation for Cucumber step definitions.
@@ -132,7 +129,7 @@ public class AzureBlobValidationService {
      * Asserts that a blob does <em>not</em> exist within the given timeout.
      *
      * <p>If the blob appears within the timeout the step fails. A timeout (blob not found) is treated as the expected
-     * outcome (pass).
+     * outcome (pass). Non-timeout failures (auth/network/config) fail the step.
      *
      * @param row DataTable row ({@code blobName}, {@code readTimeout})
      * @param container the resolved blob container entity
@@ -153,14 +150,40 @@ public class AzureBlobValidationService {
         try {
             found = runWithTimeout(new AzureBlobConsumer(ctx, globalConfig), readTimeoutMs);
         } catch (ConsumerException e) {
-            // Timeout = blob not found = expected
-            log.info("Blob '{}' not found in container '{}' as expected.", blobName, container.getContainerName());
-            return;
+            if (isTimeoutLikeFailure(e)) {
+                log.info("Blob '{}' not found in container '{}' as expected.", blobName, container.getContainerName());
+                return;
+            }
+            throw e;
         }
         if (found) {
             throw new AssertionError("Expected blob '" + blobName + "' to be absent in container '"
                     + container.getContainerName() + "', but it was found.");
         }
+    }
+
+    /**
+     * Asserts that a blob exists within the given timeout (positive existence check, no content comparison).
+     *
+     * <p>Uses no match method so {@link io.github.ktestify.match.RecordMatcherFactory} returns a
+     * {@link io.github.ktestify.match.impl.NoOpRecordMatcher} — the step passes as long as the blob is found.
+     *
+     * @param row DataTable row ({@code blobName}, {@code readTimeout})
+     * @param container the resolved blob container entity
+     */
+    public void validateBlobExists(Map<String, String> row, KtestifyBlobContainer container) {
+        String blobName = getRequired(row, "blobName");
+        Long readTimeoutMs = getReadTimeoutMs(row);
+
+        // No match method → NoOpRecordMatcher — passes if blob is found
+        AzureBlobConsumerContext ctx = AzureBlobConsumerContext.builder()
+                .containerName(container.getContainerName())
+                .connectionString(container.getConnectionString())
+                .blobName(blobName)
+                .readTimeoutMs(readTimeoutMs)
+                .build();
+
+        execute(ctx, container, readTimeoutMs);
     }
 
     // =========================================================================
@@ -182,15 +205,27 @@ public class AzureBlobValidationService {
             return Boolean.TRUE.equals(future.get(effectiveMs, TimeUnit.MILLISECONDS));
         } catch (TimeoutException e) {
             future.cancel(true);
-            throw new ConsumerException("Outer timeout exceeded after " + effectiveMs + "ms.");
+            throw new ConsumerException("Outer timeout exceeded after " + effectiveMs + "ms.", e);
         } catch (ExecutionException e) {
             Throwable cause = e.getCause();
             if (cause instanceof ConsumerException ce) throw ce;
-            throw new ConsumerException("Azure Blob consumer execution failed: " + cause.getMessage());
+            throw new ConsumerException("Azure Blob consumer execution failed: " + cause.getMessage(), cause);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new ConsumerException("Azure Blob consumer thread interrupted.");
         }
+    }
+
+    /** Returns true for timeout-like failures only (negative watcher expected outcome). */
+    private static boolean isTimeoutLikeFailure(Throwable failure) {
+        Throwable current = failure;
+        while (current != null) {
+            if (current instanceof TimeoutException || current instanceof FetchTimeoutException) {
+                return true;
+            }
+            current = current.getCause();
+        }
+        return false;
     }
 
     // =========================================================================
