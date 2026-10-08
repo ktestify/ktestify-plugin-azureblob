@@ -20,10 +20,12 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import io.github.ktestify.azureblob.config.AzureBlobConfig;
 import io.github.ktestify.azureblob.entities.KtestifyBlobContainer;
+import io.github.ktestify.exceptions.PluginException;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.ByteArrayInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Service responsible for uploading files to Azure Blob Storage.
@@ -57,7 +59,7 @@ public class AzureBlobUploadService {
      * @param container the target container entity (provides name + optional connection string)
      * @param blobName the destination blob path within the container (e.g. {@code "data/payload.json"})
      * @param sourceFile the absolute local path of the file to upload
-     * @throws RuntimeException if the file cannot be read or the upload fails
+     * @throws PluginException if the file cannot be read or the upload fails
      */
     public void upload(KtestifyBlobContainer container, String blobName, String sourceFile) {
         log.info("Uploading '{}' → blob '{}' in container '{}'…", sourceFile, blobName, container.getContainerName());
@@ -70,7 +72,7 @@ public class AzureBlobUploadService {
             blobClient.upload(new ByteArrayInputStream(content), content.length, /* overwrite */ true);
             log.info("Upload complete — blob '{}' ({} bytes).", blobName, content.length);
         } catch (Exception e) {
-            throw new RuntimeException(
+            throw new PluginException(
                     "Failed to upload '" + sourceFile + "' to blob '" + blobName + "': " + e.getMessage(), e);
         }
     }
