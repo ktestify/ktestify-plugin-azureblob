@@ -76,8 +76,7 @@ public class AzureBlobConsumer extends AbstractConsumer {
      */
     @Override
     public Boolean call() {
-        AzureBlobRecordFetcher fetcher = new AzureBlobRecordFetcher(context, globalConfig);
-        try {
+        try (AzureBlobRecordFetcher fetcher = new AzureBlobRecordFetcher(context, globalConfig)) {
             List<ConsumedRecord<String>> records = fetcher.fetch();
             MatchContext matchCtx = buildMatchContext();
             MatchResult result = matcher.match(records, matchCtx);
@@ -92,10 +91,10 @@ public class AzureBlobConsumer extends AbstractConsumer {
             return result.isPassed();
 
         } catch (FetchException e) {
-            throw new ConsumerException("Azure Blob fetch failed for '" + context.getBlobName() + "' in container '"
-                    + context.getContainerName() + "': " + e.getMessage());
-        } finally {
-            fetcher.close();
+            throw new ConsumerException(
+                    "Azure Blob fetch failed for '" + context.getBlobName() + "' in container '"
+                            + context.getContainerName() + "': " + e.getMessage(),
+                    e);
         }
     }
 

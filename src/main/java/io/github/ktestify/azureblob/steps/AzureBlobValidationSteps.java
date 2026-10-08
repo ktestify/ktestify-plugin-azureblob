@@ -98,7 +98,7 @@ public class AzureBlobValidationSteps {
      */
     @Then("expected blob content from file")
     public void thenExpectedBlobContentFromFile(DataTable dataTable) {
-        Map<String, String> row = dataTable.asMaps().get(0);
+        Map<String, String> row = dataTable.asMaps().getFirst();
         KtestifyBlobContainer container = resolveContainer(row);
         log.info("Validating blob '{}' in container '{}'…", row.get("blobName"), container.getContainerName());
         shared.validationService.validateFromFile(row, container, shared.assetsDirectory);
@@ -112,7 +112,7 @@ public class AzureBlobValidationSteps {
      */
     @Then("expected blob XML content from file")
     public void thenExpectedBlobXmlContentFromFile(DataTable dataTable) {
-        Map<String, String> row = dataTable.asMaps().get(0);
+        Map<String, String> row = dataTable.asMaps().getFirst();
         KtestifyBlobContainer container = resolveContainer(row);
         log.info("Validating XML blob '{}' in container '{}'…", row.get("blobName"), container.getContainerName());
         shared.validationService.validateFromXmlFile(row, container, shared.assetsDirectory);
@@ -129,7 +129,7 @@ public class AzureBlobValidationSteps {
      */
     @And("blob should not exist")
     public void andBlobShouldNotExist(DataTable dataTable) {
-        Map<String, String> row = dataTable.asMaps().get(0);
+        Map<String, String> row = dataTable.asMaps().getFirst();
         KtestifyBlobContainer container = resolveContainer(row);
         log.info(
                 "Asserting blob '{}' does not exist in container '{}'…",
@@ -146,19 +146,10 @@ public class AzureBlobValidationSteps {
      */
     @And("blob should exist")
     public void andBlobShouldExist(DataTable dataTable) {
-        Map<String, String> row = dataTable.asMaps().get(0);
+        Map<String, String> row = dataTable.asMaps().getFirst();
         KtestifyBlobContainer container = resolveContainer(row);
         log.info("Asserting blob '{}' exists in container '{}'…", row.get("blobName"), container.getContainerName());
-        // No match method → NoOpRecordMatcher (passes if blob is found)
-        shared.validationService.validateFromFile(
-                // Inject a dummy file value — NoOpRecordMatcher ignores it
-                new java.util.HashMap<>(row) {
-                    {
-                        putIfAbsent("file", "__existence_check__");
-                    }
-                },
-                container,
-                shared.assetsDirectory);
+        shared.validationService.validateBlobExists(row, container);
     }
 
     // -------------------------------------------------------------------------

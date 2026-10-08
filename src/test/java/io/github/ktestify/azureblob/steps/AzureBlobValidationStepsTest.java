@@ -15,13 +15,14 @@
  */
 package io.github.ktestify.azureblob.steps;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import io.cucumber.datatable.DataTable;
 import io.cucumber.datatable.DataTableTypeRegistry;
 import io.cucumber.datatable.DataTableTypeRegistryTableConverter;
 import io.github.ktestify.azureblob.entities.KtestifyBlobContainer;
 import io.github.ktestify.config.KtestifyConfig;
+import io.github.ktestify.exceptions.ConsumerException;
 import java.util.List;
 import java.util.Locale;
 import org.junit.jupiter.api.*;
@@ -186,16 +187,14 @@ class AzureBlobValidationStepsTest {
         }
 
         @Test
-        @DisplayName("andBlobShouldNotExist passes (returns normally) when no credentials — treated as blob-not-found")
+        @DisplayName("andBlobShouldNotExist fails when no credentials — non-timeout failures must propagate")
         void delegatesToServiceForAbsenceCheck() {
             shared.containers.register("real-container", "real-alias", container("real-container"));
 
             DataTable dt = buildDataTable(
                     List.of("containerAlias", "blobName", "readTimeout"), List.of("real-alias", "output.json", "1"));
 
-            // validateBlobAbsent() catches ConsumerException (including no-credentials PluginException)
-            // and treats it as "blob not found" = expected = no exception thrown.
-            assertDoesNotThrow(() -> steps.andBlobShouldNotExist(dt));
+            assertThrows(ConsumerException.class, () -> steps.andBlobShouldNotExist(dt));
         }
 
         @Test

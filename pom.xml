@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.github.ktestify</groupId>
         <artifactId>ktestify-parent</artifactId>
-        <version>1.0.3</version>
+        <version>1.0.5</version>
     </parent>
 
     <!-- Project Coordinates -->
@@ -56,7 +56,7 @@
         <dependency>
             <groupId>io.github.ktestify</groupId>
             <artifactId>ktestify-core</artifactId>
-            <version>1.1.2</version>
+            <version>1.2.1</version>
         </dependency>
 
         <!-- ===================================== -->
@@ -175,13 +175,15 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Surefire — unit tests (smaller heap than parent default) -->
+            <!-- Surefire unit tests (smaller heap than parent default) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <argLine>@{argLine} -Xmx512m -XX:+EnableDynamicAgentLoading</argLine>
-                </configuration>
+            </plugin>
+            <!-- Failsafe integration tests (*IT / *ITTests) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>

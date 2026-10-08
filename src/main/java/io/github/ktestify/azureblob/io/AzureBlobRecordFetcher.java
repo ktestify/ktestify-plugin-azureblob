@@ -21,6 +21,7 @@ import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.models.BlobProperties;
 import io.github.ktestify.azureblob.config.AzureBlobConfig;
 import io.github.ktestify.exceptions.FetchException;
+import io.github.ktestify.exceptions.FetchTimeoutException;
 import io.github.ktestify.io.core.RecordFetcher;
 import io.github.ktestify.models.ConsumedRecord;
 import java.nio.charset.StandardCharsets;
@@ -132,7 +133,7 @@ public class AzureBlobRecordFetcher implements RecordFetcher<String> {
             sleep(pollMs, blobName);
         }
 
-        throw new FetchException(String.format(
+        throw new FetchTimeoutException(String.format(
                 "Timed out after %dms waiting for blob '%s' in container '%s'.",
                 resolveReadTimeoutMs(), blobName, containerName));
     }
