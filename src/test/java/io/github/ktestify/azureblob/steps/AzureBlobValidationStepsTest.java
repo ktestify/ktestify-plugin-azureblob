@@ -15,18 +15,17 @@
  */
 package io.github.ktestify.azureblob.steps;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import io.cucumber.datatable.DataTable;
 import io.cucumber.datatable.DataTableTypeRegistry;
 import io.cucumber.datatable.DataTableTypeRegistryTableConverter;
 import io.github.ktestify.azureblob.entities.KtestifyBlobContainer;
 import io.github.ktestify.config.KtestifyConfig;
 import io.github.ktestify.exceptions.ConsumerException;
-import org.junit.jupiter.api.*;
-
 import java.util.List;
 import java.util.Locale;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.*;
 
 /**
  * Unit tests for {@link AzureBlobValidationSteps}.
@@ -224,4 +223,3 @@ class AzureBlobValidationStepsTest {
         return DataTable.create(List.of(headers, values), converter);
     }
 }
-

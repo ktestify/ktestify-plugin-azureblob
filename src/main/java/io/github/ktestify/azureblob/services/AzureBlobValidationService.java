@@ -15,21 +15,20 @@
  */
 package io.github.ktestify.azureblob.services;
 
+import static io.github.ktestify.match.RecordMatcherFactory.METHOD_MATCH_FILE;
+
 import io.github.ktestify.azureblob.config.AzureBlobConfig;
 import io.github.ktestify.azureblob.entities.KtestifyBlobContainer;
 import io.github.ktestify.azureblob.io.AzureBlobConsumer;
 import io.github.ktestify.azureblob.io.AzureBlobConsumerContext;
 import io.github.ktestify.exceptions.ConsumerException;
 import io.github.ktestify.exceptions.FetchTimeoutException;
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
-
-import static io.github.ktestify.match.RecordMatcherFactory.METHOD_MATCH_FILE;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Orchestrates Azure Blob Storage validation for Cucumber step definitions.

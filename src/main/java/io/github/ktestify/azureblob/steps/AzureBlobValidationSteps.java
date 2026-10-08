@@ -19,9 +19,8 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.github.ktestify.azureblob.entities.KtestifyBlobContainer;
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Cucumber {@code @Then} and {@code @And} step definitions for Azure Blob Storage validations.

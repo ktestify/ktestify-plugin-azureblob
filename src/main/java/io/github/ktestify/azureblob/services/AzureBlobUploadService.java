@@ -21,11 +21,10 @@ import com.azure.storage.blob.BlobContainerClientBuilder;
 import io.github.ktestify.azureblob.config.AzureBlobConfig;
 import io.github.ktestify.azureblob.entities.KtestifyBlobContainer;
 import io.github.ktestify.exceptions.PluginException;
-import lombok.extern.slf4j.Slf4j;
-
 import java.io.ByteArrayInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Service responsible for uploading files to Azure Blob Storage.
