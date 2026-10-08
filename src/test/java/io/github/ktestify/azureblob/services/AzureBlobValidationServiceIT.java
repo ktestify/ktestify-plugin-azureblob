@@ -15,22 +15,30 @@
  */
 package io.github.ktestify.azureblob.services;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import com.azure.storage.blob.BlobContainerClient;
 import com.typesafe.config.ConfigFactory;
 import io.github.ktestify.azureblob.config.AzureBlobConfig;
 import io.github.ktestify.azureblob.entities.KtestifyBlobContainer;
 import io.github.ktestify.azureblob.extensions.AzuriteTestExtension;
+import io.github.ktestify.exceptions.ConsumerException;
+import io.github.ktestify.exceptions.FetchTimeoutException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
+
 import java.io.ByteArrayInputStream;
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.io.TempDir;
+import java.util.concurrent.TimeoutException;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Integration tests for {@link AzureBlobValidationService} using a real Azurite container.
@@ -524,12 +532,43 @@ class AzureBlobValidationServiceTest {
     class ValidateBlobAbsentNoCredTests {
 
         @Test
-        @DisplayName("returns normally — ConsumerException (from missing creds) treated as blob-not-found")
-        void returnsNormallyWhenNoCredentials() {
-            // validateBlobAbsent() catches ConsumerException (which wraps the PluginException from
-            // missing credentials) and treats it as "blob not found" = expected = no exception thrown.
-            assertDoesNotThrow(() ->
+        @DisplayName("throws ConsumerException — non-timeout credential failure must fail negative check")
+        void throwsWhenNoCredentials() {
+            assertThrows(ConsumerException.class, () ->
                     service.validateBlobAbsent(Map.of("blobName", "absent.json", "readTimeout", "1"), container("c")));
+        }
+    }
+
+    @Nested
+    @DisplayName("timeout failure classification")
+    class TimeoutFailureClassificationTests {
+
+        @Test
+        @DisplayName("classifies FetchTimeoutException in cause chain as timeout-like")
+        void timeoutTypeClassifiedAsTimeoutLike() throws Exception {
+            ConsumerException wrapped =
+                    new ConsumerException("consumer execution failed", new FetchTimeoutException("timeout"));
+            assertTrue(invokeIsTimeoutLikeFailure(wrapped));
+        }
+
+        @Test
+        @DisplayName("classifies timeout causes in the chain as timeout-like")
+        void timeoutCauseClassifiedAsTimeoutLike() throws Exception {
+            ConsumerException wrapped =
+                    new ConsumerException("consumer execution failed", new IllegalStateException(new TimeoutException()));
+            assertTrue(invokeIsTimeoutLikeFailure(wrapped));
+        }
+
+        @Test
+        @DisplayName("does not classify credential/config failures as timeout-like")
+        void nonTimeoutFailureNotClassifiedAsTimeoutLike() throws Exception {
+            assertFalse(invokeIsTimeoutLikeFailure(new ConsumerException("Azure Blob auth failed: missing credentials")));
+        }
+
+        private boolean invokeIsTimeoutLikeFailure(Throwable failure) throws Exception {
+            Method method = AzureBlobValidationService.class.getDeclaredMethod("isTimeoutLikeFailure", Throwable.class);
+            method.setAccessible(true);
+            return (boolean) method.invoke(null, failure);
         }
     }
 
@@ -539,3 +578,4 @@ class AzureBlobValidationServiceTest {
         return KtestifyBlobContainer.builder().containerName(name).build();
     }
 }
+
