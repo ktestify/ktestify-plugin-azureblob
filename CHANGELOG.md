@@ -7,6 +7,8 @@ All notable changes to this project will be documented in this file.
 
 - Bump io.github.ktestify:ktestify-core from 1.0.3 to 1.1.2 *(deps)* — [@dependabot[bot]](https://github.com/dependabot[bot])
 
+- Update ktestify-parent version from 1.0.5 to 1.0.6 — [@nil-malh](https://github.com/nil-malh)
+
 
 ## [0.1.2] — 2026-09-20
 
