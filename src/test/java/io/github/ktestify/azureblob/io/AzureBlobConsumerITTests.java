@@ -15,22 +15,26 @@
  */
 package io.github.ktestify.azureblob.io;
 
-import static io.github.ktestify.match.RecordMatcherFactory.METHOD_MATCH_FILE;
-import static org.junit.jupiter.api.Assertions.*;
-
 import com.azure.storage.blob.BlobContainerClient;
 import com.typesafe.config.ConfigFactory;
 import io.github.ktestify.azureblob.config.AzureBlobConfig;
 import io.github.ktestify.azureblob.extensions.AzuriteTestExtension;
 import io.github.ktestify.exceptions.ConsumerException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
+
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.io.TempDir;
+
+import static io.github.ktestify.match.RecordMatcherFactory.METHOD_MATCH_FILE;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Integration tests for {@link AzureBlobConsumer} using a real Azurite container.
@@ -118,8 +122,8 @@ class AzureBlobConsumerITTests {
     class ContentMismatchTests {
 
         @Test
-        @DisplayName("returns false when blob content differs from expected file")
-        void returnsFalseOnMismatch(@TempDir Path tempDir) throws Exception {
+        @DisplayName("throws AssertionError when blob content differs from expected file")
+        void throwsOnMismatch(@TempDir Path tempDir) throws Exception {
             String blobContent = "{\"orderId\": \"ORD-001\"}";
             String expectedContent = "{\"orderId\": \"ORD-999\"}";
             String blobName = "consumer/mismatch.json";
@@ -135,8 +139,7 @@ class AzureBlobConsumerITTests {
                     .matchFilePaths(List.of(expectedFile.toString()))
                     .build();
 
-            Boolean result = new AzureBlobConsumer(ctx, config).call();
-            assertFalse(result);
+            assertThrows(AssertionError.class, () -> new AzureBlobConsumer(ctx, config).call());
         }
     }
 

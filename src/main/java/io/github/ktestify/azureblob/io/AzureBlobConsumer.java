@@ -24,9 +24,10 @@ import io.github.ktestify.match.MatchResult;
 import io.github.ktestify.match.RecordMatcher;
 import io.github.ktestify.match.RecordMatcherFactory;
 import io.github.ktestify.models.ConsumedRecord;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Collections;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Orchestration-layer consumer for Azure Blob Storage.
@@ -87,8 +88,10 @@ public class AzureBlobConsumer extends AbstractConsumer {
                         context.getBlobName(),
                         context.getContainerName(),
                         result.getDiff());
+                throw new AssertionError("Azure Blob validation failed for blob '" + context.getBlobName()
+                        + "' in container '" + context.getContainerName() + "': " + result.getDiff());
             }
-            return result.isPassed();
+            return true;
 
         } catch (FetchException e) {
             throw new ConsumerException(

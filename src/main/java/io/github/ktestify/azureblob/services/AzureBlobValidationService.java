@@ -15,20 +15,21 @@
  */
 package io.github.ktestify.azureblob.services;
 
-import static io.github.ktestify.match.RecordMatcherFactory.METHOD_MATCH_FILE;
-
 import io.github.ktestify.azureblob.config.AzureBlobConfig;
 import io.github.ktestify.azureblob.entities.KtestifyBlobContainer;
 import io.github.ktestify.azureblob.io.AzureBlobConsumer;
 import io.github.ktestify.azureblob.io.AzureBlobConsumerContext;
 import io.github.ktestify.exceptions.ConsumerException;
 import io.github.ktestify.exceptions.FetchTimeoutException;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
-import lombok.extern.slf4j.Slf4j;
+
+import static io.github.ktestify.match.RecordMatcherFactory.METHOD_MATCH_FILE;
 
 /**
  * Orchestrates Azure Blob Storage validation for Cucumber step definitions.
@@ -207,12 +208,26 @@ public class AzureBlobValidationService {
             throw new ConsumerException("Outer timeout exceeded after " + effectiveMs + "ms.", e);
         } catch (ExecutionException e) {
             Throwable cause = e.getCause();
-            if (cause instanceof ConsumerException ce) throw ce;
+            AssertionError assertion = findCause(cause, AssertionError.class);
+            if (assertion != null) throw assertion;
+
+            ConsumerException consumerException = findCause(cause, ConsumerException.class);
+            if (consumerException != null) throw consumerException;
+
             throw new ConsumerException("Azure Blob consumer execution failed: " + cause.getMessage(), cause);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new ConsumerException("Azure Blob consumer thread interrupted.");
         }
+    }
+
+    private static <T extends Throwable> T findCause(Throwable throwable, Class<T> type) {
+        Throwable current = throwable;
+        while (current != null) {
+            if (type.isInstance(current)) return type.cast(current);
+            current = current.getCause();
+        }
+        return null;
     }
 
     /** Returns true for timeout-like failures only (negative watcher expected outcome). */
