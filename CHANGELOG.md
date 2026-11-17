@@ -8,6 +8,11 @@ All notable changes to this project will be documented in this file.
 - Improve logging and error handling in Azure Blob consumer — [@nil-malh](https://github.com/nil-malh)
 
 
+### ⬆️ Dependency Updates
+
+- Bump io.github.ktestify:ktestify-parent from 1.0.6 to 1.0.7 (#39) *(deps)* — [@dependabot[bot]](https://github.com/dependabot[bot]) ([#39](https://github.com/ktestify/ktestify-plugin-azureblob/pull/39))
+
+
 ## [0.1.3] — 2026-10-10
 
 ### ⬆️ Dependency Updates
