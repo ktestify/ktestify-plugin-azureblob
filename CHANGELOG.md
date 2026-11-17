@@ -14,6 +14,8 @@ All notable changes to this project will be documented in this file.
 
 - Bump io.github.ktestify:ktestify-core from 1.2.1 to 1.2.9 (#38) *(deps)* — [@dependabot[bot]](https://github.com/dependabot[bot]) ([#38](https://github.com/ktestify/ktestify-plugin-azureblob/pull/38))
 
+- Bump com.azure:azure-storage-blob (#35) *(deps)* — [@dependabot[bot]](https://github.com/dependabot[bot]) ([#35](https://github.com/ktestify/ktestify-plugin-azureblob/pull/35))
+
 
 ## [0.1.3] — 2026-10-10
 
