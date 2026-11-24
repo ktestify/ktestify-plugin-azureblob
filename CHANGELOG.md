@@ -2,7 +2,8 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [0.1.4] — 2026-11-24
+
 ### ♻️ Refactoring
 
 - Improve logging and error handling in Azure Blob consumer — [@nil-malh](https://github.com/nil-malh)
