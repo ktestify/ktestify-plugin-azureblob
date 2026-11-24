@@ -16,6 +16,8 @@ All notable changes to this project will be documented in this file.
 
 - Bump com.azure:azure-storage-blob (#35) *(deps)* — [@dependabot[bot]](https://github.com/dependabot[bot]) ([#35](https://github.com/ktestify/ktestify-plugin-azureblob/pull/35))
 
+- Bump ktestify-parent to 1.0.8 (#40) — [@nil-malh](https://github.com/nil-malh) ([#40](https://github.com/ktestify/ktestify-plugin-azureblob/pull/40))
+
 
 ## [0.1.3] — 2026-10-10
 
