@@ -18,6 +18,8 @@ All notable changes to this project will be documented in this file.
 
 - Bump ktestify-parent to 1.0.8 (#40) — [@nil-malh](https://github.com/nil-malh) ([#40](https://github.com/ktestify/ktestify-plugin-azureblob/pull/40))
 
+- Bump ktestify-core to 1.2.10 (#41) — [@nil-malh](https://github.com/nil-malh) ([#41](https://github.com/ktestify/ktestify-plugin-azureblob/pull/41))
+
 
 ## [0.1.3] — 2026-10-10
 
